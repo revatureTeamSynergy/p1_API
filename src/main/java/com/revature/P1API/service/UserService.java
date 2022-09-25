@@ -1,7 +1,10 @@
 package com.revature.P1API.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,18 +22,42 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public User getUser() {
-		Long id = (long) 1;
-		Optional<User> student = userRepository.findById(id);
-		return student.get();
+	public User getUserById(long id) {
+		Optional<User> user = userRepository.findById(id);
+		if(!user.isPresent()) {
+			throw new IllegalStateException("No user with this id: "+ id);
+		}
+		return user.get();
 	}
 	
-	public User createUser() {
-		return userRepository.save(new User("jpam", "password"));
+	public void createUser(User user) {
+		userRepository.save(user);
 	}
 	
 	public List<User> getUsers() {
-		return (List<User>) userRepository.findAll();
+		return userRepository.findAll();
+	}
+
+	public void deleteUserById(long id) {
+		boolean isUser = userRepository.existsById(id);
+		if(!isUser){
+			throw new IllegalStateException("Unable to delete because no user with this id exist");
+		}
+		userRepository.deleteById(id);
+		
+	}
+	
+	@Transactional
+	public void updateUser(long id, String password) {
+		Optional<User> user = userRepository.findById(id);
+		if(!user.isPresent()) {
+			throw new IllegalStateException("No user with this id: "+ id);
+		}
+		
+		if(password != null && !Objects.equals(user.get().getPassword(), password)) {
+			user.get().setPassword(password);	
+		}
+		
 	}
 	
 }
