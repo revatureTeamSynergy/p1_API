@@ -27,7 +27,7 @@ public class TestSongController {
 	private TestRestTemplate testRestTemplate;
 
 	private ObjectMapper mapper;
-
+/*
 	@BeforeEach
 	void setup() {
 		this.restTemplate = new RestTemplate();
@@ -35,7 +35,7 @@ public class TestSongController {
 		this.sCon = new SongController();
 
 	}
-
+*/
 	@Test
 	public void contextLoads() {
 		RestTemplate restTemplate;

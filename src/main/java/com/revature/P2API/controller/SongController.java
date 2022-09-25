@@ -1,9 +1,14 @@
 package com.revature.P2API.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,22 +19,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.P2API.models.Album;
-import com.revature.P2API.models.Song;
+import com.revature.P2API.repository.models.Song;
+import com.revature.P2API.service.SongService;
 
 @RestController
-@RequestMapping("/song")
+@RequestMapping(path="/songs")
 public class SongController {
 
 	private final RestTemplate restTemplate;
 	Object result = null;
 	ObjectMapper mapper = new ObjectMapper();
-
-	public SongController() {
+	
+	private final SongService songService;
+	
+	@Autowired
+	public SongController(SongService songService) {
+		this.songService = songService;
 		this.restTemplate = new RestTemplate();
 	}
 
-	@RequestMapping(value = "/album/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/song/album/{id}", method = RequestMethod.GET)
 	public @ResponseBody Object getSongsByAlbumId(@PathVariable String id) throws IOException {
 
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/track.php?m=" + id,
@@ -51,7 +60,7 @@ public class SongController {
 
 	}
 
-	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/song/id/{id}", method = RequestMethod.GET)
 	public @ResponseBody Object getSongById(@PathVariable String id)
 			throws JsonMappingException, JsonProcessingException {
 
@@ -72,4 +81,20 @@ public class SongController {
 		return result;
 
 	}
+	
+	@PostMapping("/create")
+	public void createSong(@RequestBody Song song) {
+		songService.createSong(song);
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public void deleteUser(@PathVariable long id) {
+		songService.deleteSongById(id);
+	}
+	
+	@GetMapping
+	public List<Song> getSongs() {
+		return songService.getSongs();
+	}
+	
 }
