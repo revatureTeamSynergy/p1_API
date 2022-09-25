@@ -1,12 +1,12 @@
-package com.revature.P1API.service;
+package com.revature.P2API.service;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.P1API.repository.LoginRepository;
-import com.revature.P1API.repository.models.User;
+import com.revature.P2API.repository.LoginRepository;
+import com.revature.P2API.repository.models.User;
 
 
 @Service

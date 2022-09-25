@@ -1,4 +1,4 @@
-package com.revature.P1API.controller;
+package com.revature.P2API.controller;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.P1API.repository.models.User;
-import com.revature.P1API.service.UserService;
+import com.revature.P2API.repository.models.User;
+import com.revature.P2API.service.UserService;
 
 @RestController
 @RequestMapping(path="users/")

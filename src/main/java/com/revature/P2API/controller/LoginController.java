@@ -1,4 +1,4 @@
-package com.revature.P1API.controller;
+package com.revature.P2API.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.P1API.repository.models.User;
-import com.revature.P1API.service.LoginService;
+import com.revature.P2API.repository.models.User;
+import com.revature.P2API.service.LoginService;
 
 @RestController
 @RequestMapping("/login")

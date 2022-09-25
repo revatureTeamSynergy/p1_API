@@ -1,6 +1,7 @@
-package com.revature.P1API.repository.models;
+package com.revature.P2API.repository.models;
 
 import javax.persistence.Entity;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
