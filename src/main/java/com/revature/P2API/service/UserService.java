@@ -27,6 +27,7 @@ public class UserService {
 		if(!user.isPresent()) {
 			throw new IllegalStateException("No user with this id: "+ id);
 		}
+		
 		return user.get();
 	}
 	

@@ -1,11 +1,15 @@
 package com.revature.P2API.repository.models;
 
-import javax.persistence.Entity;
+import java.util.Set;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="users")
@@ -16,10 +20,15 @@ public class User {
 	private String username;
 	private String password;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private Set<MusicList> lists;
+	
 	
 	public User() {
 		super();
 	}
+
 
 	public User(String username, String password) {
 		super();
@@ -64,6 +73,15 @@ public class User {
 		this.password = password;
 	}
 
+	public Set<MusicList> getLists() {
+		return lists;
+	}
+
+	/*
+	public void setLists(Set<MusicList> lists) {
+		this.lists = lists;
+	}
+	*/
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + "]";
