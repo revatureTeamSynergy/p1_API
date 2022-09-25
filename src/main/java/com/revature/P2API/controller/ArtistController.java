@@ -46,6 +46,7 @@ public class ArtistController {
 		}
 
 		return result;
+		
 
 	}
 

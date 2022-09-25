@@ -173,18 +173,23 @@ function renderCreate(){
     
         //Fields
     
-        let emailLabel = document.createElement("p");
-        emailLabel.innerText = "Email";
-        rec.appendChild(emailLabel);
-        emailLabel.style.color = "cyan";
+        // let emailLabel = document.createElement("p");
+        // emailLabel.innerText = "Email";
+        // rec.appendChild(emailLabel);
+        // emailLabel.style.color = "cyan";
 
-        let emailInput = document.createElement("input");
-        emailInput.id = "email";
-        emailInput.type = "text";
-        emailInput.placeholder = "email";
-        emailInput.style.backgroundColor = "silver";
-        rec.appendChild(emailInput);
-        rec.appendChild(document.createElement("br"));
+        // let emailInput = document.createElement("input");
+        // emailInput.id = "email";
+        // emailInput.type = "text";
+        // emailInput.placeholder = "email";
+        // emailInput.style.backgroundColor = "silver";
+        // rec.appendChild(emailInput);
+        // rec.appendChild(document.createElement("br"));
+
+        let registerLabel = document.createElement("p");
+        registerLabel.innerText = "Please register";
+        rec.appendChild(registerLabel);
+        registerLabel.style.color = "cyan";
     
         let usernameLabel = document.createElement("p");
         usernameLabel.innerText = "Username";
@@ -216,7 +221,7 @@ function renderCreate(){
     
         let submitButton = document.createElement("input");
         submitButton.type = "button";
-        submitButton.value = "Login";
+        submitButton.value = "Register";
         submitButton.style.width = "80px";
         submitButton.style.borderRadius = "7px";
         submitButton.addEventListener("click", asyncCreate);
@@ -233,14 +238,12 @@ function renderCreate(){
 }
 
 async function asyncCreate() {
-    let emailInput = document.querySelector("#email").value;
     let userInput = document.querySelector("#username").value;
     let passInput = document.querySelector("#password").value;
 
-    const url = `localhost:8080/login`;
+    const url = `http://localhost:8080/users/create`;
 
     let createObj = {
-        email: emailInput,
         username: userInput,
         password: passInput
     };

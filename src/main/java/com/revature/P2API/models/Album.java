@@ -30,6 +30,7 @@ public class Album {
 	private String intScore;
 	
 	private String strMood;
+	
 
 	public Album() {
 		super();
