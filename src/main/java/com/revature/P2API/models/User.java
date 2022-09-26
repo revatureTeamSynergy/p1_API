@@ -1,4 +1,4 @@
-package com.revature.P2API.repository.models;
+package com.revature.P2API.models;
 
 import java.util.Set;
 
