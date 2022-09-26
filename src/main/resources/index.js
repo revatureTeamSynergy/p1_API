@@ -337,14 +337,14 @@ function renderHomePage(data, playlist){
 
     let playlists = ["playlist 1", "playlist 2", "playlist 3", "playlist 4"];
     for(let i = 0; i < playlists.length; i++){
-        temp = document.createElement("input");
+        let temp = document.createElement("input");
         temp.type = "button";
         temp.value = `${playlists[i]}`;
         temp.style.color = "cyan";
         temp.style.backgroundColor = "black";
         temp.style.textTransform = "capitalize";
         temp.style.textDecoration = "underline";
-        //temp.addEventListener("click", renderHomePage(`${playlist[i]}`));
+        temp.addEventListener("click", renderHomePage(`${playlist[i]}`));
         
         
         leftBB.appendChild(temp);
