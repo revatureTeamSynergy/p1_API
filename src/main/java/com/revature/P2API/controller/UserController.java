@@ -52,9 +52,17 @@ public class UserController {
 		
 	}
 	
+	//http://localhost:8080/users/user/1/lists
+	@GetMapping("/user/{id}/lists")
+	public List<String> getListsNames(@PathVariable long id){
+		return userService.getListsNames(id);
+	}
+	
 	@GetMapping
 	public List<User> getUsers() {
 		return userService.getUsers();
 	}
+	
+	
 
 }

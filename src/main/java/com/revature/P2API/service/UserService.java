@@ -1,15 +1,19 @@
 package com.revature.P2API.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.revature.P2API.repository.UserRepository;
+import com.revature.P2API.models.MusicList;
 import com.revature.P2API.models.User;
 
 @Service
@@ -46,6 +50,17 @@ public class UserService {
 		}
 		userRepository.deleteById(id);
 		
+	}
+	
+	public List<String> getListsNames(long id){
+		User user = this.getUserById(id);
+		Set<MusicList> lists = user.getLists();
+		List<String> listsNames = new ArrayList<String>();
+	    
+		for(MusicList list: lists) {
+			listsNames.add(list.getName());
+		}
+		return listsNames;
 	}
 	
 	@Transactional

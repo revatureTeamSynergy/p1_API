@@ -61,6 +61,7 @@ public class MusicListController {
 		return listService.saveList(list);
 	}
 	
+	//http://localhost:8080/lists/list?name=list1
 	@GetMapping("/list")
 	public MusicList getList(@RequestParam String name) {
 		MusicList list = listService.getListByName(name);
