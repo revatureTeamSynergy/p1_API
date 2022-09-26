@@ -122,7 +122,7 @@ async function asyncLogin() {
                 body: JSON.stringify(loginObj)}
         )
         let data = await response.json();
-        renderHomePage(data, "Library");
+        loadPlaylist(data, "list1");
         
     }catch(error){
         console.error(`Error is ${error}`);
@@ -267,13 +267,12 @@ async function asyncCreate() {
 }
 
 
-function renderHomePage(data, playlist){
+function renderHomePage(data, playlist, songs){
     derenderPage()
+
     document.body.style.width = "100%";
     document.body.style.minHeight = "1000px";
     document.body.style.margin = "0";
-
-    let songs = loadPlaylist(playlist);
 
     let gridContainer = document.createElement("div");
     gridContainer.style.display = "grid";
@@ -331,13 +330,13 @@ function renderHomePage(data, playlist){
     libraryButton.style.color = "cyan";
     libraryButton.style.backgroundColor = "black";
     libraryButton.style.textDecoration = "underline";
-    libraryButton.addEventListener("click", function(){renderHomePage(data, "Library");});
+    libraryButton.addEventListener("click", function(){loadPlaylist(data,"Library");});
     leftBB.appendChild(libraryButton);
     leftBB.appendChild(document.createElement("br"));
     leftBB.appendChild(document.createElement("br"));
 
 
-    let playlists = ["playlist 1", "playlist 2", "playlist 3", "playlist 4"];
+    let playlists = ["ListTest", "list1", "playlist 3", "playlist 4"];
     for(let i = 0; i < playlists.length; i++){
         temp = document.createElement("input");
         temp.type = "button";
@@ -346,7 +345,7 @@ function renderHomePage(data, playlist){
         temp.style.backgroundColor = "black";
         temp.style.textTransform = "capitalize";
         temp.style.textDecoration = "underline";
-        temp.addEventListener("click", function(){renderHomePage(data, `${playlists[i]}`);});
+        temp.addEventListener("click", function(){loadPlaylist(data, `${playlists[i]}`);});
         
         
         leftBB.appendChild(temp);
@@ -373,7 +372,7 @@ function renderHomePage(data, playlist){
     rightBB.appendChild(currentPlaylist);
     
 
-
+    console.log(songs);
 
 
     for(let i = 0; i < songs.length; i++){
@@ -424,11 +423,31 @@ function renderHomePage(data, playlist){
     document.querySelector("body").appendChild(gridContainer);
 }
 
-function loadPlaylist(playlist){
-    //get songs in playlist or library from DB
-    let songs = ["song 1", "song 2", "song 3"];
-    return songs;
-    console.log(`${playlist}`);
+
+async function loadPlaylist(data2, playlist){
+    
+    const url = `http://localhost:8080/lists/list?name=${playlist}`;
+
+    try{
+        let response = await fetch(url);
+
+        let data = await response.json();
+        let songs = data.songs;
+        let songNames = [];
+        for(let i = 0; i < songs.length; i++){
+            let song = songs[i].strTrack;
+            songNames.push(song);
+        }
+        
+        renderHomePage(data2, playlist, songNames)
+        
+    } catch(error){
+        renderHomePage(data2, playlist, [])
+        console.error(`Error is ${error}`);
+    }
+   
+
+    
 }
 
 function loadUserInfo(data){
