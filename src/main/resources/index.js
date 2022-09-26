@@ -267,40 +267,134 @@ async function asyncCreate() {
 }
 
 
-function renderHomePage(data){
+function renderHomePage(data, playlist){
     derenderPage()
     document.body.style.width = "100%";
     document.body.style.minHeight = "1000px";
     document.body.style.margin = "0";
 
+    let songs = loadPlaylist(playlist);
+
     let gridContainer = document.createElement("div");
     gridContainer.style.display = "grid";
-    gridContainer.style.gridTemplateColumns = "100px auto";
-    gridContainer.style.backgroundColor = "blue";
+    gridContainer.style.gridTemplateColumns = "150px auto";
+    gridContainer.style.backgroundColor = "";
+    gridContainer.style.fontFamily = "Arial";
+    gridContainer.appendChild(document.createElement("br"));
+    gridContainer.appendChild(document.createElement("br"));
+
+    let rightGrid = document.createElement("div");
+    rightGrid.style.gridColumnStart = "2";
+    rightGrid.style.gridColumnEnd = "2";
+    rightGrid.style.textAlign = "right";
     
 
-    let hello = document.createElement("div");
-    hello.style.gridColumnStart = "2";
-    hello.style.gridColumnEnd = "2";
-    hello.style.backgroundColor = "purple";
-    hello.style.textAlign = "right";
-    hello.appendChild(document.createElement("br"));
+    let leftGrid = document.createElement("div");
+    leftGrid.style.gridColumnStart = "1";
+    leftGrid.style.gridColumnEnd = "1";
+    leftGrid.style.textAlign = "center";
+    //leftGrid.style.border = "red solid 1px";
+
+    let leftBB = document.createElement("div");
+    leftBB.style.backgroundColor = "black";
+    leftBB.style.width = "100px";
+    leftBB.style.marginLeft = "auto";
+    leftBB.style.marginRight = "auto";
+    //leftBB.style.border = "red solid 1px";
+    leftBB.appendChild(document.createElement("br"));
+
+    let rightBB = document.createElement("div");
+    rightBB.style.backgroundColor = "black";
+    rightBB.style.width = "100px";
+    rightBB.style.marginLeft = "auto";
+    rightBB.style.marginRight = "auto";
+    rightBB.style.border = "red solid 1px";
+    rightBB.style.textAlign = "left";
+    rightBB.appendChild(document.createElement("br"));
+
+    let storeButton = document.createElement("input");
+    storeButton.type = "button";
+    storeButton.value = "Store";
+    storeButton.style.color = "cyan";
+    storeButton.style.backgroundColor = "black";
+    storeButton.style.textDecoration = "underline";
+    storeButton.addEventListener("click", renderStore);
+    leftBB.appendChild(storeButton);
+    leftBB.appendChild(document.createElement("br"));
+    leftBB.appendChild(document.createElement("br"));
+
+    let libraryButton = document.createElement("input");
+    libraryButton.type = "button";
+    libraryButton.value = "Library";
+    libraryButton.style.color = "cyan";
+    libraryButton.style.backgroundColor = "black";
+    libraryButton.style.textDecoration = "underline";
+    //libraryButton.addEventListener("click", songs = renderHomePage("Library"));
+    leftBB.appendChild(libraryButton);
+    leftBB.appendChild(document.createElement("br"));
+    leftBB.appendChild(document.createElement("br"));
+
+
+    let playlists = ["playlist 1", "playlist 2", "playlist 3", "playlist 4"];
+    for(let i = 0; i < playlists.length; i++){
+        temp = document.createElement("input");
+        temp.type = "button";
+        temp.value = `${playlists[i]}`;
+        temp.style.color = "cyan";
+        temp.style.backgroundColor = "black";
+        temp.style.textTransform = "capitalize";
+        temp.style.textDecoration = "underline";
+        //temp.addEventListener("click", renderHomePage(`${playlist[i]}`));
+        
+        
+        leftBB.appendChild(temp);
+        leftBB.appendChild(document.createElement("br"));
+        leftBB.appendChild(document.createElement("br"));
+    }
+
+    
+    for(let i = 0; i < songs.length; i++){
+        temp = document.createElement("input");
+        temp.type = "button";
+        temp.value = `${songs[i]}`;
+        temp.style.color = "cyan";
+        temp.style.backgroundColor = "black";
+        temp.style.textTransform = "capitalize";
+        temp.style.textDecoration = "underline";
+        temp.addEventListener("click", loadSong(`${songs[i]}`));
+            
+            
+        rightBB.appendChild(temp);
+        rightBB.appendChild(document.createElement("br"));
+        rightBB.appendChild(document.createElement("br"));
+    }
+    
+
 
     let userinfoButton = document.createElement("input");
     userinfoButton.type = "button";
     userinfoButton.value = `${data.username}`;
+    userinfoButton.style.textTransform = "capitalize";
     userinfoButton.style.width = "80px";
+    userinfoButton.style.height = "30px";
     userinfoButton.style.textAlign = "center";
-    userinfoButton.style.backgroundColor = "purple";
-    userinfoButton.style.borderColor = "purple";
-    userinfoButton.style.borderBottomColor = "black";
+    userinfoButton.style.backgroundColor = "black";
+    userinfoButton.style.color = "white";
+    userinfoButton.style.textDecoration = "underline";
+    userinfoButton.style.borderColor = "gray";
+    userinfoButton.style.borderRadius = "15px";
     userinfoButton.style.marginRight = "100px";
-    userinfoButton.addEventListener("click", loadUserInfo(data));
+    userinfoButton.onclick = loadUserInfo(data)
+    //userinfoButton.addEventListener("click", loadUserInfo(data));
     
 
-    hello.appendChild(userinfoButton);
 
-    gridContainer.appendChild(hello);
+    rightGrid.appendChild(userinfoButton);
+    rightGrid.appendChild(rightBB);
+    leftGrid.appendChild(leftBB);
+    gridContainer.appendChild(leftGrid);
+    
+    gridContainer.appendChild(rightGrid);
     
 
    
@@ -308,7 +402,22 @@ function renderHomePage(data){
     document.querySelector("body").appendChild(gridContainer);
 }
 
+function loadPlaylist(playlist){
+    //get songs in playlist or library from DB
+    let songs = ["song 1", "song 2", "song 3"];
+    return songs;
+    console.log(`${playlist}`);
+}
+
 function loadUserInfo(data){
-    derenderPage()
-    console.log(`${data.id} ${data.username} ${data.password}`)
+    derenderPage();
+    console.log(`${data.id} ${data.username} ${data.password}`);
+}
+
+function renderStore(){
+    console.log("Need to make store page!");
+}
+
+function loadSong(song){
+    console.log(song);
 }
