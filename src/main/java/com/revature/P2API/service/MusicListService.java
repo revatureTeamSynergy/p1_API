@@ -31,6 +31,14 @@ public class MusicListService {
 		return list.get();
 	}
 	
+	public MusicList getListByName(String name) {
+		Optional<MusicList> list = listRepository.findByName(name);
+		if(!list.isPresent()) {
+			throw new IllegalStateException("No list with this id: "+ name);
+		}
+		return list.get();
+	}
+	
 	public MusicList saveList(MusicList list) {
 		return listRepository.save(list);
 	}
