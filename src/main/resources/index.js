@@ -82,7 +82,7 @@ document.body.style.background = "linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(
     rec.appendChild(document.createElement("br"));
     rec.appendChild(document.createElement("br"));
 
-    let submitButton = document.createElement("input");
+    submitButton = document.createElement("input");
     submitButton.type = "button";
     submitButton.value = "Login";
     submitButton.style.width = "80px";
@@ -122,7 +122,7 @@ async function asyncLogin() {
                 body: JSON.stringify(loginObj)}
         )
         let data = await response.json();
-        renderHomePage(data);
+        renderHomePage(data, "Library");
         
     }catch(error){
         console.error(`Error is ${error}`);
@@ -300,17 +300,19 @@ function renderHomePage(data, playlist){
     leftBB.style.width = "100px";
     leftBB.style.marginLeft = "auto";
     leftBB.style.marginRight = "auto";
+    leftBB.style.borderRadius = "15px";
     //leftBB.style.border = "red solid 1px";
     leftBB.appendChild(document.createElement("br"));
 
     let rightBB = document.createElement("div");
     rightBB.style.backgroundColor = "black";
-    rightBB.style.width = "100px";
+    rightBB.style.width = "70%";
     rightBB.style.marginLeft = "auto";
     rightBB.style.marginRight = "auto";
-    rightBB.style.border = "red solid 1px";
+    //rightBB.style.border = "red solid 1px";
     rightBB.style.textAlign = "left";
-    rightBB.appendChild(document.createElement("br"));
+    rightBB.style.borderRadius = "15px";
+    
 
     let storeButton = document.createElement("input");
     storeButton.type = "button";
@@ -329,7 +331,7 @@ function renderHomePage(data, playlist){
     libraryButton.style.color = "cyan";
     libraryButton.style.backgroundColor = "black";
     libraryButton.style.textDecoration = "underline";
-    //libraryButton.addEventListener("click", songs = renderHomePage("Library"));
+    libraryButton.addEventListener("click", function(){renderHomePage(data, "Library");});
     leftBB.appendChild(libraryButton);
     leftBB.appendChild(document.createElement("br"));
     leftBB.appendChild(document.createElement("br"));
@@ -337,14 +339,14 @@ function renderHomePage(data, playlist){
 
     let playlists = ["playlist 1", "playlist 2", "playlist 3", "playlist 4"];
     for(let i = 0; i < playlists.length; i++){
-        let temp = document.createElement("input");
+        temp = document.createElement("input");
         temp.type = "button";
         temp.value = `${playlists[i]}`;
         temp.style.color = "cyan";
         temp.style.backgroundColor = "black";
         temp.style.textTransform = "capitalize";
         temp.style.textDecoration = "underline";
-        temp.addEventListener("click", renderHomePage(`${playlist[i]}`));
+        temp.addEventListener("click", function(){renderHomePage(data, `${playlists[i]}`);});
         
         
         leftBB.appendChild(temp);
@@ -352,9 +354,30 @@ function renderHomePage(data, playlist){
         leftBB.appendChild(document.createElement("br"));
     }
 
+    let createPlaylist = document.createElement("input");
+    createPlaylist.type = "button";
+    createPlaylist.value = "Create New\nPlaylist";
+    createPlaylist.style.color = "cyan";
+    createPlaylist.style.backgroundColor = "black";
+    createPlaylist.style.textDecoration = "underline";
+    createPlaylist.style.wordBreak = "break-all";
+    createPlaylist.addEventListener("click", createNewPlaylist);
+    leftBB.appendChild(createPlaylist);
+    leftBB.appendChild(document.createElement("br"));
+    leftBB.appendChild(document.createElement("br"));
+
+    let currentPlaylist = document.createElement("h1");
+    currentPlaylist.innerText = `${playlist}`;
+    currentPlaylist.style.color = "cyan";
+    currentPlaylist.style.marginLeft = "10px";
+    rightBB.appendChild(currentPlaylist);
     
+
+
+
+
     for(let i = 0; i < songs.length; i++){
-        temp = document.createElement("input");
+        let temp = document.createElement("input");
         temp.type = "button";
         temp.value = `${songs[i]}`;
         temp.style.color = "cyan";
@@ -362,7 +385,7 @@ function renderHomePage(data, playlist){
         temp.style.textTransform = "capitalize";
         temp.style.textDecoration = "underline";
         temp.addEventListener("click", loadSong(`${songs[i]}`));
-            
+        temp.style.marginLeft = "10px";        
             
         rightBB.appendChild(temp);
         rightBB.appendChild(document.createElement("br"));
@@ -384,8 +407,7 @@ function renderHomePage(data, playlist){
     userinfoButton.style.borderColor = "gray";
     userinfoButton.style.borderRadius = "15px";
     userinfoButton.style.marginRight = "100px";
-    userinfoButton.onclick = loadUserInfo(data)
-    //userinfoButton.addEventListener("click", loadUserInfo(data));
+    userinfoButton.onclick = function(){loadUserInfo(data);} 
     
 
 
@@ -420,4 +442,8 @@ function renderStore(){
 
 function loadSong(song){
     console.log(song);
+}
+
+function createNewPlaylist(){
+    console.log("need to implement this too :P")
 }
