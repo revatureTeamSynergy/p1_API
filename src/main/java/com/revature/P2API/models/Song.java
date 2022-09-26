@@ -1,10 +1,24 @@
 package com.revature.P2API.models;
 
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.P2API.models.MusicList;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
 public class Song {
-
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	private long id;
+	
 	private String idTrack;
 	
 	private String idAlbum;
@@ -22,12 +36,51 @@ public class Song {
 	private String strGenre;
 	
 	private String intTrackNumber;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy="songs")
+    private Set<MusicList> lists;
 
 	
 	
 	public Song() {
 		super();
 	}
+	
+	
+
+	public Song(String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum, String strArtist,
+			String intDuration, String strGenre, String intTrackNumber, Set<MusicList> lists) {
+		super();
+		this.idTrack = idTrack;
+		this.idAlbum = idAlbum;
+		this.idArtist = idArtist;
+		this.strTrack = strTrack;
+		this.strAlbum = strAlbum;
+		this.strArtist = strArtist;
+		this.intDuration = intDuration;
+		this.strGenre = strGenre;
+		this.intTrackNumber = intTrackNumber;
+		this.lists = lists;
+	}
+
+	public Song(long id, String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum,
+			String strArtist, String intDuration, String strGenre, String intTrackNumber, Set<MusicList> lists) {
+		super();
+		this.id = id;
+		this.idTrack = idTrack;
+		this.idAlbum = idAlbum;
+		this.idArtist = idArtist;
+		this.strTrack = strTrack;
+		this.strAlbum = strAlbum;
+		this.strArtist = strArtist;
+		this.intDuration = intDuration;
+		this.strGenre = strGenre;
+		this.intTrackNumber = intTrackNumber;
+		this.lists = lists;
+	}
+
+
 
 	public String getIdTrack() {
 		return idTrack;
@@ -101,6 +154,9 @@ public class Song {
 		this.intTrackNumber = intTrackNumber;
 	}
 	
+	public Set<MusicList> getLists() {
+		return lists;
+	}
 	
 	
 }

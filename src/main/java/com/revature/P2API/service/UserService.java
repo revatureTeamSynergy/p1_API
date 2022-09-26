@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.P2API.repository.UserRepository;
-import com.revature.P2API.repository.models.User;
+import com.revature.P2API.models.User;
 
 @Service
 public class UserService {

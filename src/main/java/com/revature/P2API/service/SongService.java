@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.P2API.repository.SongRepository;
-import com.revature.P2API.repository.models.Song;
+//import com.revature.P2API.repository.models.Song;
+import com.revature.P2API.models.Song;
 
 @Service
 public class SongService {

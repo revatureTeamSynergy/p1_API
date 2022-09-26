@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.P2API.repository.models.MusicList;
-import com.revature.P2API.repository.models.Song;
-import com.revature.P2API.repository.models.User;
+import com.revature.P2API.models.MusicList;
+//import com.revature.P2API.repository.models.Song;
+import com.revature.P2API.models.Song;
+import com.revature.P2API.models.User;
 import com.revature.P2API.service.MusicListService;
 import com.revature.P2API.service.SongService;
 import com.revature.P2API.service.UserService;

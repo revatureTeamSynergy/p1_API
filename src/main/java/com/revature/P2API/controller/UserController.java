@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.P2API.repository.models.User;
+import com.revature.P2API.models.User;
 import com.revature.P2API.service.UserService;
 
 @RestController

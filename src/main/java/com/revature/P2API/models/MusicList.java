@@ -1,4 +1,4 @@
-package com.revature.P2API.repository.models;
+package com.revature.P2API.models;
 
 import java.util.Set;
 
@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import com.revature.P2API.models.Song;
+
 import javax.persistence.JoinColumn;
 
 @Entity
