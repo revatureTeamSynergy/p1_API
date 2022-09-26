@@ -122,7 +122,7 @@ async function asyncLogin() {
                 body: JSON.stringify(loginObj)}
         )
         let data = await response.json();
-        loadPlaylist(data, "list1");
+        loadPlaylists(data, "list1");
         
     }catch(error){
         console.error(`Error is ${error}`);
@@ -267,7 +267,7 @@ async function asyncCreate() {
 }
 
 
-function renderHomePage(data, playlist, songs){
+function renderHomePage(data, lists, playlist, songs){
     derenderPage()
 
     document.body.style.width = "100%";
@@ -324,19 +324,20 @@ function renderHomePage(data, playlist, songs){
     leftBB.appendChild(document.createElement("br"));
     leftBB.appendChild(document.createElement("br"));
 
+    /*
     let libraryButton = document.createElement("input");
     libraryButton.type = "button";
     libraryButton.value = "Library";
     libraryButton.style.color = "cyan";
     libraryButton.style.backgroundColor = "black";
     libraryButton.style.textDecoration = "underline";
-    libraryButton.addEventListener("click", function(){loadPlaylist(data,"Library");});
+    libraryButton.addEventListener("click", function(){loadPlaylists(data,"Library");});
     leftBB.appendChild(libraryButton);
     leftBB.appendChild(document.createElement("br"));
     leftBB.appendChild(document.createElement("br"));
+    */
 
-
-    let playlists = ["ListTest", "list1", "playlist 3", "playlist 4"];
+    let playlists = lists;
     for(let i = 0; i < playlists.length; i++){
         temp = document.createElement("input");
         temp.type = "button";
@@ -345,7 +346,7 @@ function renderHomePage(data, playlist, songs){
         temp.style.backgroundColor = "black";
         temp.style.textTransform = "capitalize";
         temp.style.textDecoration = "underline";
-        temp.addEventListener("click", function(){loadPlaylist(data, `${playlists[i]}`);});
+        temp.addEventListener("click", function(){loadPlaylists(data, `${playlists[i]}`);});
         
         
         leftBB.appendChild(temp);
@@ -423,8 +424,21 @@ function renderHomePage(data, playlist, songs){
     document.querySelector("body").appendChild(gridContainer);
 }
 
+async function loadPlaylists(data, playlist) {
+    const url = `http://localhost:8080/users/user/${data.id}/lists`
 
-async function loadPlaylist(data2, playlist){
+    try{
+        let response = await fetch(url);
+
+        let lists = await response.json();
+        loadPlaylist(data, lists, playlist)
+    }catch(error){
+        console.log(`error is ${error}`);
+    }
+}
+
+
+async function loadPlaylist(data2, lists, playlist){
     
     const url = `http://localhost:8080/lists/list?name=${playlist}`;
 
@@ -439,7 +453,7 @@ async function loadPlaylist(data2, playlist){
             songNames.push(song);
         }
         
-        renderHomePage(data2, playlist, songNames)
+        renderHomePage(data2, lists, playlist, songNames)
         
     } catch(error){
         renderHomePage(data2, playlist, [])
