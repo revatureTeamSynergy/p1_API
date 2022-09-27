@@ -122,7 +122,7 @@ async function asyncLogin() {
                 body: JSON.stringify(loginObj)}
         )
         let data = await response.json();
-        loadPlaylists(data, "list1");
+        loadPlaylists(data, "jpam's Library");
         
     }catch(error){
         console.error(`Error is ${error}`);
@@ -361,7 +361,7 @@ function renderHomePage(data, lists, playlist, songs){
     createPlaylist.style.backgroundColor = "black";
     createPlaylist.style.textDecoration = "underline";
     createPlaylist.style.wordBreak = "break-all";
-    createPlaylist.addEventListener("click", createNewPlaylist);
+    createPlaylist.addEventListener("click", function(){loadCurrentPlaylist(data, "null", "jpam's Library", "true")});
     leftBB.appendChild(createPlaylist);
     leftBB.appendChild(document.createElement("br"));
     leftBB.appendChild(document.createElement("br"));
@@ -384,7 +384,7 @@ function renderHomePage(data, lists, playlist, songs){
         temp.style.backgroundColor = "black";
         temp.style.textTransform = "capitalize";
         temp.style.textDecoration = "underline";
-        temp.addEventListener("click", loadSong(`${songs[i]}`));
+        temp.addEventListener("click", function(){loadSong(`${songs[i]}`);});
         temp.style.marginLeft = "10px";        
             
         rightBB.appendChild(temp);
@@ -431,14 +431,15 @@ async function loadPlaylists(data, playlist) {
         let response = await fetch(url);
 
         let lists = await response.json();
-        loadPlaylist(data, lists, playlist)
+        let creating = "false";
+        loadCurrentPlaylist(data, lists, playlist, creating)
     }catch(error){
         console.log(`error is ${error}`);
     }
 }
 
 
-async function loadPlaylist(data2, lists, playlist){
+async function loadCurrentPlaylist(data2, lists, playlist, creating){
     
     const url = `http://localhost:8080/lists/list?name=${playlist}`;
 
@@ -452,9 +453,11 @@ async function loadPlaylist(data2, lists, playlist){
             let song = songs[i].strTrack;
             songNames.push(song);
         }
-        
+        if (creating == "false") {
         renderHomePage(data2, lists, playlist, songNames)
-        
+        } else {
+            createNewPlaylist(data2, songNames)
+        }
     } catch(error){
         renderHomePage(data2, playlist, [])
         console.error(`Error is ${error}`);
@@ -466,7 +469,55 @@ async function loadPlaylist(data2, lists, playlist){
 
 function loadUserInfo(data){
     derenderPage();
+    let homePage = document.createElement("input");
+    homePage.type = "button";
+    homePage.value = "Return to HomePage";
+    homePage.style.width = "150px";
+    homePage.style.marginLeft = "20px";
+    homePage.style.backgroundColor = "black";
+    homePage.style.color = "cyan";
+    homePage.style.borderRadius = "15px";
+    homePage.style.borderColor = "gray";
+    homePage.addEventListener("click", function(){loadPlaylists(data, "jpam's Library");})
+
+    let blackB = document.createElement("div");
+    blackB.style.width = "80%";
+    blackB.style.backgroundColor = "black";
+    blackB.style.borderRadius = "15px";
+    blackB.style.marginLeft = "auto";
+    blackB.style.marginRight = "auto";
+
+    let userID = document.createElement("p");
+    userID.innerText = `UserID: ${data.id}`;
+    userID.style.color = "cyan";
+    userID.style.marginLeft = "20px";
+
+    let userName = document.createElement("p");
+    userName.innerText = `Username: ${data.username}`;
+    userName.style.color = "cyan";
+    userName.style.marginLeft = "20px";
+
+    let userPass = document.createElement("p");
+    userPass.innerText = `Password: ${data.password}`;
+    userPass.style.color = "cyan";
+    userPass.style.marginLeft = "20px";
+
     console.log(`${data.id} ${data.username} ${data.password}`);
+
+    blackB.appendChild(document.createElement("br"));
+    blackB.appendChild(userID);
+    blackB.appendChild(document.createElement("br"));
+    blackB.appendChild(userName);
+    blackB.appendChild(document.createElement("br"));
+    blackB.appendChild(userPass);
+    blackB.appendChild(document.createElement("br"));
+    blackB.appendChild(document.createElement("br"));
+    document.querySelector("body").appendChild(document.createElement("br"));
+    document.querySelector("body").appendChild(document.createElement("br"));
+    document.querySelector("body").appendChild(homePage);
+    document.querySelector("body").appendChild(document.createElement("br"));
+    document.querySelector("body").appendChild(document.createElement("br"));
+    document.querySelector("body").appendChild(blackB);
 }
 
 function renderStore(){
@@ -477,6 +528,96 @@ function loadSong(song){
     console.log(song);
 }
 
-function createNewPlaylist(){
-    console.log("need to implement this too :P")
+async function createNewPlaylist(data, songs){
+    console.log("loaded");
+    derenderPage();
+    let homePage = document.createElement("input");
+    homePage.type = "button";
+    homePage.value = "Return to HomePage";
+    homePage.style.width = "150px";
+    homePage.style.marginLeft = "20px";
+    homePage.style.backgroundColor = "black";
+    homePage.style.color = "cyan";
+    homePage.style.borderRadius = "15px";
+    homePage.style.borderColor = "gray";
+    homePage.addEventListener("click", function(){loadPlaylists(data, "jpam's Library");})
+
+    let blackB = document.createElement("div");
+    blackB.style.width = "80%";
+    blackB.style.backgroundColor = "black";
+    blackB.style.borderRadius = "15px";
+    blackB.style.marginLeft = "auto";
+    blackB.style.marginRight = "auto";
+    blackB.style.textIndent = "20px";
+
+    blackB.appendChild(document.createElement("br"));
+
+    let nameLabel = document.createElement("p");
+    nameLabel.innerText = "Playlist Name:";
+    nameLabel.style.color = "cyan";
+    blackB.appendChild(nameLabel);
+
+    let nameInput = document.createElement("input");
+    nameInput.id = "name";
+    nameInput.type = "text";
+    nameInput.placeholder = "Playlist name";
+    nameInput.style.backgroundColor = "silver";
+    nameInput.style.marginLeft = "20px";
+    blackB.appendChild(nameInput);
+    blackB.appendChild(document.createElement("br"));
+
+    let selectL = document.createElement("p");
+    selectL.innerText = "Select the songs you want to add!";
+    selectL.style.color = "cyan";
+    blackB.appendChild(selectL);
+
+    let playlistSongs = [];
+    for(let i = 0; i < songs.length; i++){
+        let temp = document.createElement("input");
+        temp.type = "button";
+        temp.value = `${songs[i]}`;
+        temp.style.color = "cyan";
+        temp.style.backgroundColor = "black";
+        temp.style.textTransform = "capitalize";
+        temp.style.textDecoration = "underline";
+        temp.addEventListener("click", function onClick(){
+            if(temp.style.color == "cyan"){
+            temp.style.color = "gray";
+            playlistSongs.push(songs[i]);
+            } else {
+            temp.style.color = "cyan";
+            playlistSongs.splice(i, 1);
+            }
+            console.log(playlistSongs);
+        })
+        temp.addEventListener("click", function(){loadSong(`${songs[i]}`);});
+        temp.style.marginLeft = "10px";
+        blackB.appendChild(temp);       
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(document.createElement("br"));
+    }       
+
+    let createButton = document.createElement("input");
+    createButton.type = "button";
+    createButton.value = "Create!";
+    createButton.style.color = "cyan";
+    createButton.style.backgroundColor = "black";
+    createButton.style.borderColor = "gray";
+    createButton.style.borderRadius = "15px";
+    createButton.style.marginLeft = "20px";
+    createButton.addEventListener("click", function(){//asyncCreatePlaylist(data, playlistSongs);
+    console.log(`${nameInput.value} ${playlistSongs}`);});
+
+    blackB.appendChild(createButton);
+
+    blackB.appendChild(document.createElement("br"));
+    blackB.appendChild(document.createElement("br"));
+
+    document.querySelector("body").appendChild(document.createElement("br"));
+    document.querySelector("body").appendChild(document.createElement("br"));
+    document.querySelector("body").appendChild(homePage);
+    document.querySelector("body").appendChild(document.createElement("br"));
+    document.querySelector("body").appendChild(document.createElement("br"));
+    document.querySelector("body").appendChild(blackB);
+
 }
