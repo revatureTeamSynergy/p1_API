@@ -657,7 +657,7 @@ async function asyncCreatePlaylist(listName, songs, data) {
 
 async function asyncPutSongsInPlaylist(id, song) {
     
-    const url = `http://localhost:8080/lists/${id}/songs/${song.idTrack}`;
+    const url = `http://localhost:8080/lists/${id}/songs/${song.id}`;
 
     try{
         let response = await fetch(
