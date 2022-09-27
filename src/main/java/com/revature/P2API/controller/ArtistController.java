@@ -48,6 +48,7 @@ public class ArtistController {
 		
 
 	}
+	
 
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
 	public @ResponseBody Object getArtistById(@PathVariable String id)

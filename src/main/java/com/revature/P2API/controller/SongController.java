@@ -106,6 +106,30 @@ public class SongController {
 		return songs;
 	}
 	
+	@GetMapping("/videos/artist")
+	public @ResponseBody Object getMusicVideosByArtistName(@RequestParam String id) throws JsonMappingException, JsonProcessingException{
+		Artist artist = artistService.getArtistByName(id);
+		
+		System.out.println(artist.getIdArtist().toString());
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/mvid.php?i=" + artist.getIdArtist().toString(),
+				String.class);
+
+		if (response.equals("{\"track\":null}"))
+			result = response;
+
+		else {
+
+			String responseFormatted = response.substring(9, response.length() - 1);
+
+			result = (Song[]) mapper.readValue(responseFormatted, new TypeReference<Song[]>() {
+			});
+
+		}
+
+		return result;
+
+	}
+	
 	@PostMapping("/create")
 	public void createSong(@RequestBody Song song) {
 		songService.createSong(song);

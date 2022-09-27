@@ -37,6 +37,10 @@ public class Song {
 	
 	private String intTrackNumber;
 	
+	private String strMusicVid;
+	
+	private String strDescriptionEN;
+	
 	@JsonIgnore
 	@ManyToMany(mappedBy="songs")
     private Set<MusicList> lists;
@@ -50,8 +54,26 @@ public class Song {
 	
 
 	public Song(String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum, String strArtist,
-			String intDuration, String strGenre, String intTrackNumber, Set<MusicList> lists) {
+			String intDuration, String strGenre, String intTrackNumber, Set<MusicList> lists, String strMusicVid, String strDescriptionEN) {
 		super();
+		this.idTrack = idTrack;
+		this.idAlbum = idAlbum;
+		this.idArtist = idArtist;
+		this.strTrack = strTrack;
+		this.strAlbum = strAlbum;
+		this.strArtist = strArtist;
+		this.intDuration = intDuration;
+		this.strGenre = strGenre;
+		this.intTrackNumber = intTrackNumber;
+		this.lists = lists;
+		this.strMusicVid = strMusicVid;
+		this.strDescriptionEN = strDescriptionEN;
+	}
+
+	public Song(long id, String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum,
+			String strArtist, String intDuration, String strGenre, String intTrackNumber, Set<MusicList> lists ) {
+		super();
+		this.id = id;
 		this.idTrack = idTrack;
 		this.idAlbum = idAlbum;
 		this.idArtist = idArtist;
@@ -64,10 +86,13 @@ public class Song {
 		this.lists = lists;
 	}
 
-	public Song(long id, String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum,
-			String strArtist, String intDuration, String strGenre, String intTrackNumber, Set<MusicList> lists) {
+
+	
+
+	public Song(String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum, String strArtist,
+			String intDuration, String strGenre, String intTrackNumber, String strMusicVid, String strDescriptionEN,
+			Set<MusicList> lists) {
 		super();
-		this.id = id;
 		this.idTrack = idTrack;
 		this.idAlbum = idAlbum;
 		this.idArtist = idArtist;
@@ -77,6 +102,39 @@ public class Song {
 		this.intDuration = intDuration;
 		this.strGenre = strGenre;
 		this.intTrackNumber = intTrackNumber;
+		this.strMusicVid = strMusicVid;
+		this.strDescriptionEN = strDescriptionEN;
+		this.lists = lists;
+	}
+
+
+
+	
+	public String getStrMusicVid() {
+		return strMusicVid;
+	}
+
+
+
+	public void setStrMusicVid(String strMusicVid) {
+		this.strMusicVid = strMusicVid;
+	}
+
+
+
+	public String getStrDescriptionEN() {
+		return strDescriptionEN;
+	}
+
+
+
+	public void setStrDescriptionEN(String strDescriptionEN) {
+		this.strDescriptionEN = strDescriptionEN;
+	}
+
+
+
+	public void setLists(Set<MusicList> lists) {
 		this.lists = lists;
 	}
 

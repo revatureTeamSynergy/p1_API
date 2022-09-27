@@ -113,5 +113,14 @@ public class TestSongController {
 
 		assertEquals(response.getBody(), "{\"track\":null}");
 	}
+	
+	@Test
+	void getMusicVideosByArtistIdJsonContent() throws JsonMappingException, JsonProcessingException {
+
+		ResponseEntity<String> response = testRestTemplate
+				.getForEntity("https://www.theaudiodb.com/api/v1/json/2/mvid.php?i=" + "1", String.class);
+
+		assertEquals(response.getStatusCode(), HttpStatus.resolve(500));
+	}
 
 }
