@@ -133,28 +133,33 @@ public class SongController {
 		
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/mvid.php?i=" + artist.getIdArtist().toString(),
 				String.class);
+		
+		
 
-		if (response.equals("{\"track\":null}"))
-			result = response;
+		if (response.equals("{\"mvids\":null}")) {
+			System.out.println("Null response");
+			result = "";
 
-		else {
+		}else {
 
 			String responseFormatted = response.substring(9, response.length() - 1);
 
 			songsWithVids = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
 			});
+			
+			for (Song songVid : songsWithVids) {
+				for (Song song : songs) {
+					if (songVid.getIdTrack() == song.getIdTrack()) {
+						song.setStrMusicVid(songVid.getStrMusicVid());
+						song.setStrDescriptionEN(songVid.getStrDescriptionEN());
+					}
+				}
+				
+			}
 
 		}
 		
-		for (Song songVid : songsWithVids) {
-			for (Song song : songs) {
-				if (songVid.getIdTrack() == song.getIdTrack()) {
-					song.setStrMusicVid(songVid.getStrMusicVid());
-					song.setStrDescriptionEN(songVid.getStrDescriptionEN());
-				}
-			}
-			
-		}
+		
 		
 		
 		return songs;
