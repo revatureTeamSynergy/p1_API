@@ -78,6 +78,8 @@ public class SongController {
 			});
 
 		}
+		
+		createSong((Song) result);
 
 		return result;
 

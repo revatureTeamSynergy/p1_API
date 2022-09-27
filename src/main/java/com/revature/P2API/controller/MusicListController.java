@@ -3,14 +3,12 @@ package com.revature.P2API.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.P2API.models.MusicList;
@@ -23,7 +21,6 @@ import com.revature.P2API.service.UserService;
 
 @RestController
 @RequestMapping(path="/lists")
-@CrossOrigin("*")
 public class MusicListController {
 	
 	private final MusicListService listService;
@@ -61,17 +58,10 @@ public class MusicListController {
 		return listService.saveList(list);
 	}
 	
-	//http://localhost:8080/lists/list?name=list1
-	@GetMapping("/list")
-	public MusicList getList(@RequestParam String name) {
-		MusicList list = listService.getListByName(name);
-		
-		return list;
-	}
-	
 	@GetMapping
 	public List<MusicList> getUsers() {
 		return listService.getlists();
 	}
+	
 	
 }

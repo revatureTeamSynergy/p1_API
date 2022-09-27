@@ -49,6 +49,21 @@ public class MusicList {
 		this.id = id;
 		this.name = name;
 	}
+	
+	
+
+	public MusicList(String name, Set<Song> songs, User user) {
+		super();
+		this.name = name;
+		this.songs = songs;
+		this.user = user;
+	}
+
+	public MusicList(String name, User user) {
+		super();
+		this.name = name;
+		this.user = user;
+	}
 
 	public long getId() {
 		return id;

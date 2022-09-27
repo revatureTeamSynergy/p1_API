@@ -1,6 +1,9 @@
 package com.revature.P2API.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,7 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.P2API.models.MusicList;
+import com.revature.P2API.models.Song;
 import com.revature.P2API.models.User;
+import com.revature.P2API.repository.LoginRepository;
+import com.revature.P2API.service.MusicListService;
+import com.revature.P2API.service.SongService;
 import com.revature.P2API.service.UserService;
 
 @RestController
@@ -24,16 +32,36 @@ public class UserController {
 	
 	
 	private final UserService userService;
+	private LoginRepository loginRepository;
+	private MusicListService listService;
+	public MusicListController musicController;
+	private SongService songService;
+	
 	
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService, LoginRepository loginRepository,  MusicListService listService, SongService songService, MusicListController musicController) {
 		super();
 		this.userService = userService;
+		this.loginRepository = loginRepository;
+		this.listService = listService;
+		this.songService = songService;
+		this.musicController = musicController;
 	}
 	
 	@PostMapping("/create")
 	public void createUser(@RequestBody User user) {
 		userService.createUser(user);
+		
+		Optional<User> login = loginRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+		
+		MusicList list = new MusicList(user.getUsername() + "'s " + " Library", login.get());
+		
+		musicController.createList(list);
+		listService.saveList(list);
+	
+		musicController.addUserToList(listService.getListByName(user.getUsername() + "'s " + " Library").getId(), login.get().getId());
+		
+		
 	}
 	
 	@GetMapping("/{id}")
