@@ -44,7 +44,6 @@ public class ArtistController {
 			});
 
 		}
-		System.out.println("k");
 		return result;
 		
 
@@ -72,5 +71,7 @@ public class ArtistController {
 		return result;
 
 	}
+	
+	
 
 }

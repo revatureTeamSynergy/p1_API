@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -19,8 +20,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.revature.P2API.repository.models.Song;
+import com.revature.P2API.models.Album;
+import com.revature.P2API.models.Artist;
+import com.revature.P2API.models.MusicList;
 import com.revature.P2API.models.Song;
+import com.revature.P2API.service.AlbumService;
+import com.revature.P2API.service.ArtistService;
 import com.revature.P2API.service.SongService;
 
 @RestController
@@ -32,10 +37,15 @@ public class SongController {
 	ObjectMapper mapper = new ObjectMapper();
 	
 	private final SongService songService;
+	private final ArtistService artistService;
+	private final AlbumService albumService;
 	
 	@Autowired
-	public SongController(SongService songService) {
+	public SongController(SongService songService, ArtistService artistService, AlbumService albumService) {
+		this.artistService = artistService;
 		this.songService = songService;
+		this.albumService = albumService;
+		
 		this.restTemplate = new RestTemplate();
 	}
 
@@ -83,6 +93,17 @@ public class SongController {
 
 		return result;
 
+	}
+	
+	//http://localhost:8080/songs/artist?name=shakira
+	@GetMapping("/artist")
+	public List<Song> getSongsByArtist(@RequestParam String name) throws JsonMappingException, JsonProcessingException{
+		Artist artist = artistService.getArtistByName(name);
+		
+		List<Album> albums = albumService.getAlbumsByArtistId(artist.getIdArtist());
+		
+		List<Song> songs = songService.getSongsByArtistAlbums(albums);
+		return songs;
 	}
 	
 	@PostMapping("/create")
