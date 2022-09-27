@@ -89,6 +89,33 @@ public class SongController {
 
 		}
 		
+		List<Song> songsWithVids = null;
+		
+		String response2 = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/mvid.php?i=" + ((Song) result).getIdArtist(),
+				String.class);
+
+		if (response.equals("{\"track\":null}"))
+			result = response2;
+
+		else {
+
+			String responseFormatted = response.substring(9, response.length() - 1);
+
+			songsWithVids = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
+			});
+
+		}
+		
+		for (Song songVid : songsWithVids) {
+			
+				if (songVid.getIdTrack() == ((Song) result).getIdTrack()) {
+					((Song) result).setStrMusicVid(songVid.getStrMusicVid());
+					((Song) result).setStrDescriptionEN(songVid.getStrDescriptionEN());
+				
+			}
+			
+		}
+		
 		createSong((Song) result);
 
 		return result;
@@ -101,8 +128,35 @@ public class SongController {
 		Artist artist = artistService.getArtistByName(name);
 		
 		List<Album> albums = albumService.getAlbumsByArtistId(artist.getIdArtist());
-		
+		List<Song> songsWithVids = null;
 		List<Song> songs = songService.getSongsByArtistAlbums(albums);
+		
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/mvid.php?i=" + artist.getIdArtist().toString(),
+				String.class);
+
+		if (response.equals("{\"track\":null}"))
+			result = response;
+
+		else {
+
+			String responseFormatted = response.substring(9, response.length() - 1);
+
+			songsWithVids = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
+			});
+
+		}
+		
+		for (Song songVid : songsWithVids) {
+			for (Song song : songs) {
+				if (songVid.getIdTrack() == song.getIdTrack()) {
+					song.setStrMusicVid(songVid.getStrMusicVid());
+					song.setStrDescriptionEN(songVid.getStrDescriptionEN());
+				}
+			}
+			
+		}
+		
+		
 		return songs;
 	}
 	
