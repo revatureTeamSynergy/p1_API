@@ -32,12 +32,21 @@ public class SongService {
 		this.songRepository = songRepository;
 	}
 	
-	public void createSong(Song song) {
-		songRepository.save(song);
+	public Song createSong(Song song) {
+		return songRepository.save(song);
+		
 	}
 	
 	public Song getSongById(long id) {
 		Optional<Song> song = songRepository.findById(id);
+		if(!song.isPresent()) {
+			throw new IllegalStateException("No song with this id: "+ id);
+		}
+		return song.get();
+	}
+	
+	public Song getSongByTrackId(String id) {
+		Optional<Song> song = songRepository.findByIdTrack(id);
 		if(!song.isPresent()) {
 			throw new IllegalStateException("No song with this id: "+ id);
 		}

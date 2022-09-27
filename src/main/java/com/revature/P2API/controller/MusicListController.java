@@ -39,8 +39,12 @@ public class MusicListController {
 	}
 	
 	@PostMapping("/create")
-	public void createList(@RequestBody MusicList list) {
+	public MusicList createList(@RequestBody MusicList list) {
 		listService.createList(list);
+		
+		MusicList list2 = getList(list.getName());
+		
+		return list2;
 	}
 	
 	@PutMapping("/{listId}/songs/{songId}")
