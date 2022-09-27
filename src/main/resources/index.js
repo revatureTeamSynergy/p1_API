@@ -267,6 +267,8 @@ async function asyncCreate() {
 }
 
 
+
+
 function renderHomePage(data, lists, playlist, songs){
     derenderPage()
 
@@ -456,7 +458,7 @@ async function loadCurrentPlaylist(data2, lists, playlist, creating){
         if (creating == "false") {
         renderHomePage(data2, lists, playlist, songNames)
         } else {
-            createNewPlaylist(data2, songNames)
+            createNewPlaylist(data2, songs)
         }
     } catch(error){
         renderHomePage(data2, playlist, [])
@@ -575,7 +577,7 @@ async function createNewPlaylist(data, songs){
     for(let i = 0; i < songs.length; i++){
         let temp = document.createElement("input");
         temp.type = "button";
-        temp.value = `${songs[i]}`;
+        temp.value = `${songs[i].strTrack}`;
         temp.style.color = "cyan";
         temp.style.backgroundColor = "black";
         temp.style.textTransform = "capitalize";
@@ -605,8 +607,10 @@ async function createNewPlaylist(data, songs){
     createButton.style.borderColor = "gray";
     createButton.style.borderRadius = "15px";
     createButton.style.marginLeft = "20px";
-    createButton.addEventListener("click", function(){//asyncCreatePlaylist(data, playlistSongs);
-    console.log(`${nameInput.value} ${playlistSongs}`);});
+    createButton.addEventListener("click", function(){
+        asyncCreatePlaylist(nameInput.value, songs, data);
+    });
+    
 
     blackB.appendChild(createButton);
 
@@ -620,4 +624,68 @@ async function createNewPlaylist(data, songs){
     document.querySelector("body").appendChild(document.createElement("br"));
     document.querySelector("body").appendChild(blackB);
 
+}
+
+async function asyncCreatePlaylist(listName, songs, data) {
+    const url = 'http://localhost:8080/lists/create';
+
+    let listObj = {
+        name: listName
+    };
+
+    try{
+        let response = await fetch(
+            url,
+            {
+                method: "POST",
+                headers: new Headers({
+                    'content-type':'application/json'
+                }),
+                body: JSON.stringify(listObj)
+            }
+            
+        )
+        let playlistObj = await response.json();
+        for (let i = 0; i < songs.length; i++){
+            asyncPutSongsInPlaylist(playlistObj.id, songs[i]);
+        }
+        asyncMapListtoUser(playlistObj.id, data.id)
+    }catch(error){
+        console.error(`Error is ${error}`);
+    }
+}
+
+async function asyncPutSongsInPlaylist(id, song) {
+    
+    const url = `http://localhost:8080/lists/${id}/songs/${song.idTrack}`;
+
+    try{
+        let response = await fetch(
+            url,
+            {
+                method: "PUT"
+            }
+        )
+        let thing = await response.json();
+        console.log(thing);
+    }catch(error)
+    {console.log(`error is ${error}`);} 
+}
+
+async function asyncMapListtoUser(listID, userID) {
+
+    const url = `http://localhost:8080/lists/${listID}/users/${userID}`;
+
+    try{
+        let response = await fetch(
+            url,
+            {
+                method: "PUT"
+            }
+        )
+            let thing = await response.json();
+            console.log(thing);
+        
+    } catch(error)
+    {console.log(`error is ${error}`);}
 }
