@@ -298,7 +298,7 @@ function renderHomePage(data, lists, playlist, songs){
 
     let leftBB = document.createElement("div");
     leftBB.style.backgroundColor = "black";
-    leftBB.style.width = "100px";
+    leftBB.style.width = "120px";
     leftBB.style.marginLeft = "auto";
     leftBB.style.marginRight = "auto";
     leftBB.style.borderRadius = "15px";
