@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.P2API.models.MusicList;
@@ -58,6 +59,13 @@ public class MusicListController {
 		
 		list.addUser(user);
 		return listService.saveList(list);
+	}
+	
+	@GetMapping("/list")
+	public MusicList getList(@RequestParam String name) {
+		MusicList list = listService.getListByName(name);
+
+		return list;
 	}
 	
 	@GetMapping
