@@ -2,6 +2,9 @@ let banner = document.querySelector("#banner");
 
 window.addEventListener("load", renderLogin)
 
+const localstorage_user = JSON.parse(localStorage.getItem('user'));
+  const inMemoryToken = localstorage_user.access_token;
+
 
 function derenderPage(){
     document.querySelector("body").innerHTML = "";
@@ -108,7 +111,8 @@ async function asyncLogin() {
     let userInput = document.querySelector("#username").value;
     let passInput = document.querySelector("#password").value;
 
-    const url = "http://localhost:8080/login";
+    const url = "http://localhost:8080/auth/login";
+    
 
     let loginObj = {
         username: userInput,
@@ -125,8 +129,12 @@ async function asyncLogin() {
                 }),
                 body: JSON.stringify(loginObj)}
         )
+        
         let data = await response.json();
-        loadPlaylists(data, "jpam's Library");
+        let inMemoryToken = data.token;
+
+        localStorage.setItem('user', JSON.stringify(data));
+        loadPlaylists(data, userInput + "'s  Library");
         
     }catch(error){
         console.error(`Error is ${error}`);
@@ -469,8 +477,8 @@ async function loadPlaylists(user, playlist) {
     const url = `http://localhost:8080/users/user/${user.id}/lists`
 
     try{
-        let response = await fetch(url);
-
+        let response = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} })
+	 
         let lists = await response.json();
         let creating = "false";
         loadCurrentPlaylist(user, lists, playlist, creating)
@@ -485,7 +493,8 @@ async function loadCurrentPlaylist(user, lists, playlist, creating){
     const url = `http://localhost:8080/lists/list?name=${playlist}`;
 
     try{
-        let response = await fetch(url);
+        let response = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} });
+        
 
         let data = await response.json();
         let songs = data.songs;
@@ -701,7 +710,7 @@ async function asyncSearchByArtist(user, artist, library){
     const url = `http://localhost:8080/songs/artist?name=${artist}`;
 
     try{
-        let result = await fetch(url)
+        let result = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} })
         let songs = await result.json();
         renderStore(user, songs, library);
     } catch(error){
@@ -828,6 +837,7 @@ async function asyncCreatePlaylist(listName, songs, data) {
             {
                 method: "POST",
                 headers: new Headers({
+					"Authorization": "Bearer " + inMemoryToken,
                     'content-type':'application/json'
                 }),
                 body: JSON.stringify(listObj)
@@ -850,9 +860,13 @@ async function asyncPutSongsInPlaylist(id, song) {
 
     try{
         let response = await fetch(
-            url,
+            url, 
             {
-                method: "PUT"
+                method: "PUT",
+                headers: new Headers({
+					"Authorization": "Bearer " + inMemoryToken,
+                    'content-type':'application/json'
+                })
             }
         )
         let thing = await response.json();
@@ -867,9 +881,13 @@ async function asyncMapListtoUser(listID, userID) {
 
     try{
         let response = await fetch(
-            url,
+            url,  
             {
-                method: "PUT"
+                method: "PUT",
+                headers: new Headers({
+					"Authorization": "Bearer " + inMemoryToken,
+                    'content-type':'application/json'
+                })
             }
         )
             let thing = await response.json();
@@ -879,5 +897,20 @@ async function asyncMapListtoUser(listID, userID) {
     {console.log(`error is ${error}`);}
 }
 
+async function asyncPutSongInDatabaseANDLibrary(libraryID, song){
+    console.log(song);
+    const url = `http://localhost:8080/songs/song/id/${song.idTrack}`
+    
+    console.log("Added!");
+    try{
+    let response = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} });
+    
+    let newSong = await response.json();
+    console.log(newSong);
+    asyncPutSongsInPlaylist(libraryID, newSong);
+    }catch (error) {
+        console.log(`Error is ${error}`);
+    }
 
+}
 

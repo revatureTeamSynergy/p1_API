@@ -1,6 +1,7 @@
 package com.revature.P2API.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -9,21 +10,35 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import com.revature.P2API.repository.UserRepository;
+import com.revature.P2API.controller.MusicListController;
 import com.revature.P2API.models.MusicList;
 import com.revature.P2API.models.User;
+import com.revature.P2API.repository.LoginRepository;
+import com.revature.P2API.repository.UserRepository;
 
 @Service
-public class UserService {
-	final private UserRepository userRepository;
+public class UserService implements UserDetailsService {
+	
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder encoder;
+
+
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
 		super();
 		this.userRepository = userRepository;
+	
+	
 	}
 
 	public User getUserById(long id) {
@@ -35,8 +50,11 @@ public class UserService {
 		return user.get();
 	}
 	
-	public void createUser(User user) {
-		userRepository.save(user);
+	public User createUser(User user) {
+		user.setPassword(encoder.encode(user.getPassword()));
+		
+		
+		return userRepository.save(user);
 	}
 	
 	public List<User> getUsers() {
@@ -51,6 +69,10 @@ public class UserService {
 		userRepository.deleteById(id);
 		
 	}
+	
+	 public User getByUsername(String username) {
+	        return userRepository.findByUsername(username);
+	    }
 	
 	public List<String> getListsNames(long id){
 		User user = this.getUserById(id);
@@ -75,5 +97,24 @@ public class UserService {
 		}
 		
 	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = getByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
+        } else {
+            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+           
+                authorities.add(new SimpleGrantedAuthority("admin"));
+                return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+            }
+
+          
+        }
+	
+
+
 	
 }

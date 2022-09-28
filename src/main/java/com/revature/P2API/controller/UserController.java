@@ -49,10 +49,10 @@ public class UserController {
 	}
 	
 	@PostMapping("/create")
-	public void createUser(@RequestBody User user) {
+	public User createUser(@RequestBody User user) {
 		userService.createUser(user);
 		
-		Optional<User> login = loginRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+		Optional<User> login = loginRepository.findByUsername(user.getUsername());
 		
 		MusicList list = new MusicList(user.getUsername() + "'s " + " Library", login.get());
 		
@@ -60,6 +60,7 @@ public class UserController {
 		listService.saveList(list);
 	
 		musicController.addUserToList(listService.getListByName(user.getUsername() + "'s " + " Library").getId(), login.get().getId());
+		return user;
 		
 		
 	}
