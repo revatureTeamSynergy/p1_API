@@ -93,7 +93,7 @@ public class UserService implements UserDetailsService {
 		}
 		
 		if(password != null && !Objects.equals(user.get().getPassword(), password)) {
-			user.get().setPassword(password);	
+			user.get().setPassword(encoder.encode(password));	
 		}
 		
 	}
