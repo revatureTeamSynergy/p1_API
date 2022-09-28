@@ -34,7 +34,7 @@ public class AlbumController {
 	@RequestMapping(value = "/name/{id}", method = RequestMethod.GET)
 	public @ResponseBody Object getAlbumById(@PathVariable String id) throws IOException {
 
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/album.php?m=" + id,
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/album.php?m=" + id,
 				String.class);
 
 		if (response.equals("{\"album\":null}"))
@@ -57,7 +57,7 @@ public class AlbumController {
 	public @ResponseBody Object getAlbumsByArtistId(@PathVariable String id)
 			throws JsonMappingException, JsonProcessingException {
 
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/album.php?i=" + id,
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/album.php?i=" + id,
 				String.class);
 
 		if (response.equals("{\"album\":null}"))

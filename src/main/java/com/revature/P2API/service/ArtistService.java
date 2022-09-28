@@ -24,7 +24,7 @@ public class ArtistService {
 	}
 	
 	public Artist getArtistByName(String name) throws JsonMappingException, JsonProcessingException {
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/search.php?s=" + name,
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/search.php?s=" + name,
 				String.class);
 
 		if (response.equals("{\"artists\":null}"))

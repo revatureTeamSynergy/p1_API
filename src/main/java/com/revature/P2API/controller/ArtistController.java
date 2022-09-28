@@ -32,7 +32,7 @@ public class ArtistController {
 	@RequestMapping(value = "/name/{id}", method = RequestMethod.GET)
 	public @ResponseBody Object getArtistByName(@PathVariable String id) throws IOException {
 
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/search.php?s=" + id,
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/search.php?s=" + id,
 				String.class);
 
 		if (response.equals("{\"artists\":null}"))
@@ -55,7 +55,7 @@ public class ArtistController {
 	public @ResponseBody Object getArtistById(@PathVariable String id)
 			throws JsonMappingException, JsonProcessingException {
 
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/artist.php?i=" + id,
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/artist.php?i=" + id,
 				String.class);
 
 		if (response.equals("{\"artists\":null}"))

@@ -53,7 +53,7 @@ public class SongController {
 	@RequestMapping(value = "/song/album/{id}", method = RequestMethod.GET)
 	public @ResponseBody Object getSongsByAlbumId(@PathVariable String id) throws IOException {
 
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/track.php?m=" + id,
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/track.php?m=" + id,
 				String.class);
 
 		if (response.equals("{\"track\":null}"))
@@ -76,7 +76,7 @@ public class SongController {
 	public @ResponseBody Object getSongById(@PathVariable String id)
 			throws JsonMappingException, JsonProcessingException {
 
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/track.php?h=" + id,
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/track.php?h=" + id,
 				String.class);
 
 		if (response.equals("{\"track\":null}"))
@@ -132,7 +132,7 @@ public class SongController {
 		List<Song> songsWithVids = null;
 		List<Song> songs = songService.getSongsByArtistAlbums(albums);
 		
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/mvid.php?i=" + artist.getIdArtist().toString(),
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/mvid.php?i=" + artist.getIdArtist().toString(),
 				String.class);
 		
 		
@@ -171,7 +171,7 @@ public class SongController {
 		Artist artist = artistService.getArtistByName(id);
 		
 		System.out.println(artist.getIdArtist().toString());
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/mvid.php?i=" + artist.getIdArtist().toString(),
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/mvid.php?i=" + artist.getIdArtist().toString(),
 				String.class);
 
 		if (response.equals("{\"track\":null}"))
