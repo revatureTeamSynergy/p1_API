@@ -632,6 +632,7 @@ function renderLogin(){
         blackB.style.borderRadius = "15px";
         blackB.style.marginLeft = "auto";
         blackB.style.marginRight = "auto";
+        blackB.style.fontFamily = "Arial";
     
         let userID = document.createElement("p");
         userID.innerText = `UserID: ${user.id}`;
@@ -642,11 +643,46 @@ function renderLogin(){
         userName.innerText = `Username: ${user.username}`;
         userName.style.color = "cyan";
         userName.style.marginLeft = "20px";
-    
-        let userPass = document.createElement("p");
-        userPass.innerText = `Password: ${user.password}`;
-        userPass.style.color = "cyan";
-        userPass.style.marginLeft = "20px";
+
+        let pUpText = document.createElement("input");
+        pUpText.type = "text";
+        pUpText.style.width = "150px";
+        pUpText.style.backgroundColor = "gray";
+        pUpText.style.color = "black";
+        //pUpText.style.borderRadius = "15px";
+        pUpText.style.borderColor = "black";
+        pUpText.style.display = "none";
+        pUpText.style.marginLeft = "18px";
+
+        let pUpDone = document.createElement("input");
+        pUpDone.type = "button";
+        pUpDone.value = "Update!";
+        pUpDone.style.width = "80px";
+        pUpDone.style.backgroundColor = "black";
+        pUpDone.style.color = "cyan";
+        //pUpDone.style.borderRadius = "15px";
+        pUpDone.style.borderColor = "gray";
+        pUpDone.style.display = "none";
+        pUpDone.style.marginLeft = "55px";
+        pUpDone.addEventListener("mouseenter", function(){pUpDone.style.color = "silver";});
+        pUpDone.addEventListener("mouseleave", function(){pUpDone.style.color = "cyan";});
+        pUpDone.addEventListener("click", function(){ asyncUpdatePassword(user, pUpText.value); });
+
+
+        
+
+        let pUpdate = document.createElement("input");
+        pUpdate.type = "button";
+        pUpdate.value = "Update Password";
+        pUpdate.style.width = "150px";
+        pUpdate.style.backgroundColor = "black";
+        pUpdate.style.color = "cyan";
+        //pUpdate.style.borderRadius = "15px";
+        pUpdate.style.borderColor = "gray";
+        pUpdate.style.marginLeft = "20px";
+        pUpdate.addEventListener("mouseenter", function(){pUpdate.style.color = "silver";});
+        pUpdate.addEventListener("mouseleave", function(){pUpdate.style.color = "cyan";});
+        pUpdate.addEventListener("click", function(){pUpText.style.display = "block"; pUpDone.style.display = "block";});
     
         
     
@@ -655,8 +691,12 @@ function renderLogin(){
         blackB.appendChild(document.createElement("br"));
         blackB.appendChild(userName);
         blackB.appendChild(document.createElement("br"));
-        blackB.appendChild(userPass);
+        blackB.appendChild(pUpdate);
         blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(pUpText);
+        blackB.appendChild(pUpDone);
+        
         blackB.appendChild(document.createElement("br"));
         document.querySelector("body").appendChild(document.createElement("br"));
         document.querySelector("body").appendChild(document.createElement("br"));
@@ -864,7 +904,7 @@ async function asyncPutSongInDatabaseANDLibrary(libraryID, song){
     let response = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} });
     
     let newSong = await response.json();
-    console.log(newSong);
+   
     asyncPutSongInPlaylist(libraryID, newSong);
     }catch (error) {
         console.log(`Error is ${error}`);
@@ -874,7 +914,7 @@ async function asyncPutSongInDatabaseANDLibrary(libraryID, song){
 
 async function asyncSearchByArtist(user, artist, library){
     const url = `http://localhost:8080/songs/artist?name=${artist}`;
-    console.log(url);
+    
     try{
         let result = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} })
         let songs = await result.json();
@@ -884,4 +924,34 @@ async function asyncSearchByArtist(user, artist, library){
         console.log(`Error is ${error}`);
     }
     
+}
+
+async function asyncUpdatePassword(user, newPass){
+    const url = `http://localhost:8080/users/${user.id}`;
+    console.log(newPass);
+    let newPasswordObj = {
+        password: newPass
+    };
+
+    try{
+        let response = await fetch(
+            url,  
+            {
+                method: "PUT",
+                headers: new Headers({
+					"Authorization": "Bearer " + inMemoryToken,
+                    'content-type':'application/json'
+                }),
+                body: JSON.stringify(newPasswordObj)
+            }
+        )
+            
+
+    } catch (error) {
+        console.log(`Error is ${error}`);
+    }
+}
+
+async function asyncDeleteUser(user){
+    const url = `http://localhost:8080/users/delete/${user.id}`
 }
