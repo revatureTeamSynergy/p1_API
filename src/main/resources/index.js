@@ -139,7 +139,8 @@ async function asyncLogin() {
         const localstorage_user = JSON.parse(localStorage.getItem('user'));
 const inMemoryToken = localstorage_user.access_token;
 
-        loadPlaylists(data, inMemoryToken, "jpam's Library");
+        loadPlaylists(data, inMemoryToken, `${data.username}'s  Library
+        `);
         
     }catch(error){
         console.error(`Error is ${error}`);
@@ -294,7 +295,7 @@ function renderHomePage(data, lists, playlist, songs){
 
     derenderPage()
 
-    let libraryname = `${data.username}'s library`;
+    let libraryname = `${data.username}'s  Library`;
     
     
 
@@ -351,7 +352,7 @@ function renderHomePage(data, lists, playlist, songs){
     storeButton.style.textDecoration = "underline";
     storeButton.addEventListener("mouseenter", function(){storeButton.style.color = "silver";});
     storeButton.addEventListener("mouseleave", function(){storeButton.style.color = "cyan";});
-    storeButton.addEventListener("click", function(){renderStore(data, "null", 3);});
+    storeButton.addEventListener("click", function(){renderStore(data, "null", libraryname.id);});
     leftBB.appendChild(storeButton);
     leftBB.appendChild(document.createElement("br"));
     leftBB.appendChild(document.createElement("br"));
@@ -689,7 +690,7 @@ function renderStore(user, searchResults, library){
     console.log(newSongs);
     addSongs.addEventListener("click", function(){
         for (let i = 0; i < newSongs.length; i++){
-        asyncPutSongsInPlaylist(3, newSongs[i]);
+        asyncPutSongsInPlaylist(library, newSongs[i]);
         };
     });
     
@@ -903,6 +904,7 @@ async function asyncMapListtoUser(listID, userID) {
     } catch(error)
     {console.log(`error is ${error}`);}
 }
+
 
 async function asyncPutSongInDatabaseANDLibrary(libraryID, song){
     console.log(song);
