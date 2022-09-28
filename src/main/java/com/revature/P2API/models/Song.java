@@ -227,6 +227,30 @@ public class Song {
 	public Set<MusicList> getLists() {
 		return lists;
 	}
-	
-	
+
+/*
+	@Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        final Song other = (Song) obj;
+  
+        if(!this.idTrack.equals(other.idTrack) && !this.idAlbum.equals(other.idAlbum) &&
+        		!this.idArtist.equals(other.idArtist) && !this.strTrack.equals(other.idArtist) &&
+        		!this.strAlbum.equals(other.strAlbum) && !this.strArtist.equals(other.strArtist) &&
+        		!this.intDuration.equals(other.intDuration) && !this.strGenre.equals(other.strGenre) &&
+        		!this.intTrackNumber.equals(other.intTrackNumber) && !this.strMusicVid.equals(other.strMusicVid) &&
+        		!this.strDescriptionEN.equals(other.strDescriptionEN)) {
+        	return false;
+        }
+
+        return true;
+    }	
+*/
 }

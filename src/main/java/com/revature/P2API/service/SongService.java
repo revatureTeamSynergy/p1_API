@@ -37,10 +37,29 @@ public class SongService {
 		
 	}
 	
+	public Song createSongByTrackId(String trackId) throws JsonMappingException, JsonProcessingException {
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/track.php?h=" + trackId,
+				String.class);
+
+		if (response.equals("{\"track\":null}"))
+			result = response;
+
+		else {
+			String responseFormatted = response.substring(10, response.length() - 2);
+
+			result = (Song) mapper.readValue(responseFormatted, new TypeReference<Song>() {
+			});
+
+		}
+		Song song = (Song) result;
+		return songRepository.save(song);
+	}
+	
 	public Song getSongById(long id) {
 		Optional<Song> song = songRepository.findById(id);
 		if(!song.isPresent()) {
 			throw new IllegalStateException("No song with this id: "+ id);
+			//return null;
 		}
 		return song.get();
 	}
@@ -48,7 +67,8 @@ public class SongService {
 	public Song getSongByTrackId(String id) {
 		Optional<Song> song = songRepository.findByIdTrack(id);
 		if(!song.isPresent()) {
-			throw new IllegalStateException("No song with this id: "+ id);
+			//throw new IllegalStateException("No song with this id: "+ id);
+			return null;
 		}
 		return song.get();
 	}

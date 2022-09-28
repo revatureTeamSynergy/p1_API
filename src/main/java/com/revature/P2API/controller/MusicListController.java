@@ -1,5 +1,6 @@
 package com.revature.P2API.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.revature.P2API.models.MusicList;
 //import com.revature.P2API.repository.models.Song;
 import com.revature.P2API.models.Song;
@@ -47,6 +50,7 @@ public class MusicListController {
 		return list2;
 	}
 	
+	/*
 	@PutMapping("/{listId}/songs/{songId}")
 	public MusicList addSongToList(@PathVariable long listId, @PathVariable long songId) {
 		MusicList list = listService.getListById(listId);
@@ -54,6 +58,25 @@ public class MusicListController {
 		
 		list.addSong(song);
 		return listService.saveList(list);
+	}*/
+	
+	@PutMapping("/{listId}/songs/{trackId}")
+	public MusicList addSongToList(@PathVariable long listId, @PathVariable String trackId) throws JsonMappingException, JsonProcessingException {
+		MusicList list = listService.getListById(listId);
+		Song song = songService.getSongByTrackId(trackId);
+		
+		if(song == null) {
+			Song createdSong = songService.createSongByTrackId(trackId);
+			list.addSong(createdSong);
+			return listService.saveList(list);
+			
+		}else if(song != null) {
+			if (!list.getSongs().contains(song)) {
+				list.addSong(song);
+				return listService.saveList(list);
+			}
+		}
+		return list;
 	}
 	
 	@PostMapping("/{listId}/manySongs")
