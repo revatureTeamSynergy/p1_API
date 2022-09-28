@@ -3,7 +3,7 @@ let banner = document.querySelector("#banner");
 window.addEventListener("load", renderLogin)
 
 const localstorage_user = JSON.parse(localStorage.getItem('user'));
-  const inMemoryToken = localstorage_user.access_token;
+const inMemoryToken = localstorage_user.access_token;
 
 
 function derenderPage(){
@@ -110,7 +110,7 @@ document.body.style.background = "linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(
 async function asyncLogin() {
     let userInput = document.querySelector("#username").value;
     let passInput = document.querySelector("#password").value;
-
+	console.log(userInput)
     const url = "http://localhost:8080/auth/login";
     
 
@@ -131,10 +131,15 @@ async function asyncLogin() {
         )
         
         let data = await response.json();
-        let inMemoryToken = data.token;
-
+        
+      
+        
+   
         localStorage.setItem('user', JSON.stringify(data));
-        loadPlaylists(data, userInput + "'s  Library");
+        const localstorage_user = JSON.parse(localStorage.getItem('user'));
+const inMemoryToken = localstorage_user.access_token;
+
+        loadPlaylists(data, inMemoryToken, "jpam's Library");
         
     }catch(error){
         console.error(`Error is ${error}`);
@@ -473,11 +478,13 @@ function renderHomePage(data, lists, playlist, songs){
 //async function loadPlaylistThenGoToStore
 
 
-async function loadPlaylists(user, playlist) {
-    const url = `http://localhost:8080/users/user/${user.id}/lists`
+async function loadPlaylists(user, inMemoryToken, playlist) {
+    const url = `http://localhost:8080/users/user/${user.id}/lists`;
+   
+
 
     try{
-        let response = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} })
+        let response = await fetch(url, { headers: {"Authorization": `Bearer ${inMemoryToken}`} })
 	 
         let lists = await response.json();
         let creating = "false";

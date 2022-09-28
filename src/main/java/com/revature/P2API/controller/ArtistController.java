@@ -2,6 +2,7 @@ package com.revature.P2API.controller;
 
 import java.io.IOException;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,12 +13,12 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.P2API.models.Artist;
 
 @RestController
 @RequestMapping("/artist")
+@CrossOrigin("*")
 public class ArtistController {
 
 	private final RestTemplate restTemplate;

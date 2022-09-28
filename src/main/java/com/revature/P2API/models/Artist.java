@@ -44,6 +44,10 @@ public class Artist {
 		super();
 	}
 
+	public Artist(String strArtist) {
+		this.strArtist = strArtist;
+	}
+
 	public String getIdArtist() {
 		return idArtist;
 	}

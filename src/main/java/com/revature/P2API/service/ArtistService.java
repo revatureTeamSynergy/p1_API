@@ -28,7 +28,7 @@ public class ArtistService {
 				String.class);
 
 		if (response.equals("{\"artists\":null}"))
-			result = response;
+			result = new Artist("No artist found");
 
 		else {
 
