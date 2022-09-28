@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.P2API.models.Album;
 import com.revature.P2API.models.Artist;
-import com.revature.P2API.models.MusicList;
 import com.revature.P2API.models.Song;
 import com.revature.P2API.service.AlbumService;
 import com.revature.P2API.service.ArtistService;
@@ -30,6 +30,7 @@ import com.revature.P2API.service.SongService;
 
 @RestController
 @RequestMapping(path="/songs")
+@CrossOrigin("*")
 public class SongController {
 
 	private final RestTemplate restTemplate;

@@ -465,22 +465,22 @@ function renderHomePage(data, lists, playlist, songs){
 //async function loadPlaylistThenGoToStore
 
 
-async function loadPlaylists(data, playlist) {
-    const url = `http://localhost:8080/users/user/${data.id}/lists`
+async function loadPlaylists(user, playlist) {
+    const url = `http://localhost:8080/users/user/${user.id}/lists`
 
     try{
         let response = await fetch(url);
 
         let lists = await response.json();
         let creating = "false";
-        loadCurrentPlaylist(data, lists, playlist, creating)
+        loadCurrentPlaylist(user, lists, playlist, creating)
     }catch(error){
         console.log(`error is ${error}`);
     }
 }
 
 
-async function loadCurrentPlaylist(data2, lists, playlist, creating){
+async function loadCurrentPlaylist(user, lists, playlist, creating){
     
     const url = `http://localhost:8080/lists/list?name=${playlist}`;
 
@@ -495,12 +495,12 @@ async function loadCurrentPlaylist(data2, lists, playlist, creating){
             songNames.push(song);
         }
         if (creating == "false") {
-        renderHomePage(data2, lists, playlist, songNames)
+        renderHomePage(user, lists, playlist, songNames)
         } else {
-            createNewPlaylist(data2, songs)
+            createNewPlaylist(user, songs)
         }
     } catch(error){
-        renderHomePage(data2, playlist, [])
+        renderHomePage(user, playlist, [])
         console.error(`Error is ${error}`);
     }
    
@@ -670,12 +670,12 @@ function renderStore(user, searchResults, library){
     addSongs.style.borderColor = "gray";
     addSongs.style.textAlign = "center";
     addSongs.style.color = "black";
+    console.log(newSongs);
     addSongs.addEventListener("click", function(){
         for (let i = 0; i < newSongs.length; i++){
-            
-        asyncPutSongInDatabaseANDLibrary(library, newSongs[i]);
-    }});
-
+        asyncPutSongsInPlaylist(3, newSongs[i]);
+        };
+    });
     
     if(searchResults != 'null'){
         blackB.appendChild(document.createElement("br"));
@@ -846,7 +846,7 @@ async function asyncCreatePlaylist(listName, songs, data) {
 
 async function asyncPutSongsInPlaylist(id, song) {
     
-    const url = `http://localhost:8080/lists/${id}/songs/${song.id}`;
+    const url = `http://localhost:8080/lists/${id}/songs/${song.idTrack}`;
 
     try{
         let response = await fetch(
@@ -879,20 +879,5 @@ async function asyncMapListtoUser(listID, userID) {
     {console.log(`error is ${error}`);}
 }
 
-async function asyncPutSongInDatabaseANDLibrary(libraryID, song){
-    console.log(song);
-    const url = `http://localhost:8080/songs/song/id/${song.idTrack}`
-    
-    console.log("Added!");
-    try{
-    let response = await fetch(url);
-    
-    let newSong = await response.json();
-    console.log(newSong);
-    asyncPutSongsInPlaylist(libraryID, newSong);
-    }catch (error) {
-        console.log(`Error is ${error}`);
-    }
 
-}
 
