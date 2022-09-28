@@ -56,6 +56,19 @@ public class MusicListController {
 		return listService.saveList(list);
 	}
 	
+	@PostMapping("/{listId}/manySongs")
+	public MusicList addSongsToList(@RequestBody List<Song> songs,@PathVariable long listId ) {
+		
+		MusicList list = listService.getListById(listId);
+		
+		for (int i = 0; i < songs.size(); i++) {
+			list.addSong(songs.get(i));
+		
+		}
+		
+		return listService.saveList(list);
+	}
+	
 	@PutMapping("/{listId}/users/{userId}")
 	public MusicList addUserToList(@PathVariable long listId, @PathVariable long userId) {
 		MusicList list = listService.getListById(listId);
