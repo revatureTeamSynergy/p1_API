@@ -668,8 +668,32 @@ function renderLogin(){
         pUpDone.addEventListener("mouseleave", function(){pUpDone.style.color = "cyan";});
         pUpDone.addEventListener("click", function(){ asyncUpdatePassword(user, pUpText.value); });
 
-
+        let deleteButton = document.createElement("input");
+        deleteButton.type = "button";
+        deleteButton.value = "Delete User";
+        deleteButton.style.width = "80px";
+        deleteButton.style.backgroundColor = "black";
+        deleteButton.style.color = "cyan";
+        //deleteButton.style.borderRadius = "15px";
+        deleteButton.style.borderColor = "gray";
+        deleteButton.style.marginLeft = "55px";
+        deleteButton.addEventListener("mouseenter", function(){deleteButton.style.color = "silver";});
+        deleteButton.addEventListener("mouseleave", function(){deleteButton.style.color = "cyan";});
+        deleteButton.addEventListener("click", function(){ ruSure.style.display = "block"; });
         
+        let ruSure = document.createElement("input");
+        ruSure.type = "button";
+        ruSure.value = "Are you sure?";
+        ruSure.style.width = "150px";
+        ruSure.style.backgroundColor = "black";
+        ruSure.style.color = "red";
+        //ruSure.style.borderRadius = "15px";
+        ruSure.style.borderColor = "gray";
+        ruSure.style.marginLeft = "20px";
+        ruSure.style.display = "none";
+        ruSure.addEventListener("mouseenter", function(){ruSure.style.color = "silver";});
+        ruSure.addEventListener("mouseleave", function(){ruSure.style.color = "red";});
+        ruSure.addEventListener("click", function(){asyncDeleteUser(user); renderLogin();});
 
         let pUpdate = document.createElement("input");
         pUpdate.type = "button";
@@ -695,7 +719,19 @@ function renderLogin(){
         blackB.appendChild(document.createElement("br"));
         blackB.appendChild(document.createElement("br"));
         blackB.appendChild(pUpText);
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(document.createElement("br"));
+
         blackB.appendChild(pUpDone);
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(deleteButton);
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(ruSure);
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(document.createElement("br"));
+
         
         blackB.appendChild(document.createElement("br"));
         document.querySelector("body").appendChild(document.createElement("br"));
@@ -953,5 +989,22 @@ async function asyncUpdatePassword(user, newPass){
 }
 
 async function asyncDeleteUser(user){
+    
     const url = `http://localhost:8080/users/delete/${user.id}`
+
+    try{
+        let result = await fetch(
+            url,
+            {
+                method: "DELETE",
+                headers: new Headers({
+					"Authorization": "Bearer " + inMemoryToken,
+                    'content-type':'application/json'
+                })
+            }
+        )
+        
+    }catch(error){
+        console.log(`error is ${error}`);
+    }
 }
