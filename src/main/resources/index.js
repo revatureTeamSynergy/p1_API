@@ -1042,11 +1042,11 @@ async function asyncSearchByArtist(user, artist, library, userLists){
 }
 
 async function asyncUpdatePassword(user, newPass){
-    const url = `http://localhost:8080/users/${user.id}`;
+    const url = `http://localhost:8080/users/${user.id}?password=${newPass}`;
     console.log(newPass);
-    let newPasswordObj = {
-        password: newPass
-    };
+    // let newPasswordObj = {
+    //     password: newPass
+    // };
 
     try{
         let response = await fetch(
@@ -1057,7 +1057,7 @@ async function asyncUpdatePassword(user, newPass){
 					"Authorization": "Bearer " + inMemoryToken,
                     'content-type':'application/json'
                 }),
-                body: JSON.stringify(newPasswordObj)
+                // body: JSON.stringify(newPasswordObj)
             }
         )
             
