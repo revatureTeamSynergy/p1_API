@@ -347,6 +347,8 @@ function renderLogin(){
 
             let tempImg = document.createElement("img");
             tempImg.src = `${songs[i].strAlbumThumb}`;
+            tempImg.style.width = "60px";
+            tempImg.style.height = "60px";
 
             let temp = document.createElement("input");
             temp.type = "button";
@@ -584,7 +586,7 @@ function renderLogin(){
         createButton.style.marginLeft = "20px";
         createButton.addEventListener("click", function(){
             asyncCreateNewPlaylist(nameInput.value, playlistSongs, user, library, songs, userLists);
-            delay(1000).then(() => asyncLoadPlaylists(user, library.name, "creating"));
+            delay(1700).then(() => asyncLoadPlaylists(user, library.name, "creating"));
         });
         
     
@@ -1144,22 +1146,6 @@ function renderLogin(){
     }
 }
 
-async function asyncPutSongInDatabase(libraryID, song){
-    console.log(song);
-    const url = `http://localhost:8080/songs/song/id/${song.idTrack}`;
-    console.log(url);
-
-    try{
-        let response = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} });
-        
-        let newSong = await response.json();
-        asyncPutSongInPlaylist(libraryID, newSong);
-       
-        }catch (error) {
-            console.log(`Error is ${error}`);
-        }
-
-}
 
 async function asyncPutSongInPlaylist(playlistId, song) {
     console.log(song.strAlbumThumb);

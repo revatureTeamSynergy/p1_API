@@ -73,10 +73,10 @@ public class MusicListController {
 			
 		}else if(song != null) {
 			song.setStrAlbumThumb(strAlbumThumb);
-			//if (!list.getSongs().contains(song)) {
+			if (!list.getSongs().contains(song)) {
 				list.addSong(song);
 				return listService.saveList(list);
-			//}
+			}
 		}
 		return list;
 	}
