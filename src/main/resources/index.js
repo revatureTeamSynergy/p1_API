@@ -1,4 +1,5 @@
 let banner = document.querySelector("#banner");
+
 window.addEventListener("load", renderLogin);
 
 //JWT
@@ -324,26 +325,53 @@ function renderLogin(){
         currentPlaylist.style.marginLeft = "10px";
         rightBB.appendChild(currentPlaylist);
         
-    
         
-    
+        songs = songs.sort((a, b) => a.strTrack.localeCompare(b.strArtist));
     
         for(let i = 0; i < songs.length; i++){
+            let tempInfo = document.createElement("p");
+            
+            if(songs[i].strMusicVid !== null & songs[i].strGenre !== null){
+                tempInfo.innerHTML = `${songs[i].strGenre} - <a href="${songs[i].strMusicVid}">Music Video</a>`;
+            } else if (songs[i].strMusicVid === null & songs[i].strGenre !== null){
+                tempInfo.innerHTML = `${songs[i].strGenre}`;
+            } else {
+                tempInfo.innerHTML = `Database has no further information on this song!`;
+            }
+            
+            tempInfo.style.color = "cyan";
+            tempInfo.style.fontSize = "16px";
+            tempInfo.style.marginLeft = "25px";
+            
+            let tempS = "hid";
+
+            let tempImg = document.createElement("img");
+            tempImg.src = `${songs[i].strAlbumThumb}`;
+
             let temp = document.createElement("input");
             temp.type = "button";
-            temp.value = `${songs[i].strTrack}`;
+            temp.value = `${songs[i].strArtist} - ${songs[i].strTrack}`;
             temp.style.color = "cyan";
             temp.style.backgroundColor = "black";
             temp.style.textTransform = "capitalize";
             temp.style.textDecoration = "underline";
             temp.addEventListener("mouseenter", function(){temp.style.color = "silver";});
             temp.addEventListener("mouseleave", function(){temp.style.color = "cyan";});
-            temp.addEventListener("click", function(){loadSong(`${songss[i]}`);});
-            temp.style.marginLeft = "10px";        
-                
+            temp.addEventListener("click", function(){if (tempS == "hid"){
+            rightBB.replaceChild(tempInfo, tempbr);
+            tempS = "shown";
+            } else {
+            rightBB.replaceChild(tempbr, tempInfo);
+            tempS = "hid";
+            } })
+            temp.style.marginLeft = "10px"; 
+            
+            let tempbr = document.createElement("br");
+            
+            rightBB.appendChild(tempImg);   
             rightBB.appendChild(temp);
-            rightBB.appendChild(document.createElement("br"));
-            rightBB.appendChild(document.createElement("br"));
+            rightBB.appendChild(tempbr);
+            
         }
         
     
@@ -367,7 +395,7 @@ function renderLogin(){
         
     
         
-       
+       rightBB.appendChild(document.createElement('br'));
         rightGrid.appendChild(userinfoButton);
         rightGrid.appendChild(rightBB);
         leftGrid.appendChild(leftBB);
@@ -801,9 +829,10 @@ function renderLogin(){
     addSongs.style.textAlign = "center";
     addSongs.style.color = "black";
     console.log(newSongs);
-    addSongs.addEventListener("click", function(){
+    addSongs.addEventListener("click", async function(){
         for (let i = 0; i < newSongs.length; i++){
-        asyncPutSongInPlaylist(library.id, newSongs[i]);
+        
+        await asyncPutSongInPlaylist(library.id, newSongs[i]);
         };
     });
     
@@ -1104,7 +1133,7 @@ function renderLogin(){
         )
         let playlistObj = await response.json();
         for (let i = 0; i < newSongs.length; i++){
-            asyncPutSongInPlaylist(playlistObj.id, newSongs[i]);
+            await asyncPutSongInPlaylist(playlistObj.id, newSongs[i]);
         }
         asyncMapListtoUser(playlistObj.id, user.id);
     if(response.status == 200){
@@ -1115,8 +1144,25 @@ function renderLogin(){
     }
 }
 
+async function asyncPutSongInDatabase(libraryID, song){
+    console.log(song);
+    const url = `http://localhost:8080/songs/song/id/${song.idTrack}`;
+    console.log(url);
+
+    try{
+        let response = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} });
+        
+        let newSong = await response.json();
+        asyncPutSongInPlaylist(libraryID, newSong);
+       
+        }catch (error) {
+            console.log(`Error is ${error}`);
+        }
+
+}
+
 async function asyncPutSongInPlaylist(playlistId, song) {
-    console.log(song.strAlbumThumb)
+    console.log(song.strAlbumThumb);
     const url = `http://localhost:8080/lists/${playlistId}/songs/${song.idTrack}?strAlbumThumb=${song.strAlbumThumb}`;
     
     try{
@@ -1126,7 +1172,7 @@ async function asyncPutSongInPlaylist(playlistId, song) {
                 method: "PUT",
                 headers: new Headers({
 					"Authorization": "Bearer " + inMemoryToken,
-                    'Content-Type':'application/json'
+                    'content-type':'application/json'
                 })
             }
         )
@@ -1134,7 +1180,6 @@ async function asyncPutSongInPlaylist(playlistId, song) {
         
     }catch(error)
     {console.log(`error is ${error}`);} 
-    asyncPutSongInDatabaseANDLibrary(libraryID, song);
 }
 
 async function asyncMapListtoUser(listID, userID) {
@@ -1159,25 +1204,6 @@ async function asyncMapListtoUser(listID, userID) {
     {console.log(`error is ${error}`);}
 }
 
-
-async function asyncPutSongInDatabaseANDLibrary(libraryID, song){
-    console.log(song);
-    console.log(song.idTrack);
-    console.log(song.strAlbumThumb);
-    const url = `http://localhost:8080/songs/song/id/${song.idTrack}`
-    
-    console.log("Added!");
-    try{
-    let response = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} });
-    
-    let newSong = await response.json();
-   
-   
-    }catch (error) {
-        console.log(`Error is ${error}`);
-    }
-    // asyncPutSongInPlaylist(libraryID, newSong);
-}
 
 async function asyncSearchByArtist(user, artist, library, userLists){
     const url = `http://localhost:8080/songs/artist?name=${artist}`;
