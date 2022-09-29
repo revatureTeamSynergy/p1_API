@@ -225,8 +225,7 @@ function renderLogin(){
         gridContainer.style.gridTemplateColumns = "150px auto";
         gridContainer.style.backgroundColor = "";
         gridContainer.style.fontFamily = "Arial";
-        gridContainer.appendChild(document.createElement("br"));
-        gridContainer.appendChild(document.createElement("br"));
+        
     
         let rightGrid = document.createElement("div");
         rightGrid.style.gridColumnStart = "2";
@@ -238,6 +237,12 @@ function renderLogin(){
         leftGrid.style.gridColumnStart = "1";
         leftGrid.style.gridColumnEnd = "1";
         leftGrid.style.textAlign = "center";
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
     
         let leftBB = document.createElement("div");
         leftBB.style.backgroundColor = "black";
@@ -379,6 +384,7 @@ function renderLogin(){
     function createNewPlaylist(user, library, songs, userLists){
         derenderPage();
         
+        /*
         let homePage = document.createElement("input");
         homePage.type = "button";
         homePage.value = "Return to HomePage";
@@ -391,126 +397,31 @@ function renderLogin(){
         homePage.addEventListener("mouseenter", function(){homePage.style.color = "silver";});
         homePage.addEventListener("mouseleave", function(){homePage.style.color = "cyan";});
         homePage.addEventListener("click", function(){asyncLoadPlaylists(user, library.name);});
-    
-        let blackB = document.createElement("div");
-        blackB.style.width = "80%";
-        blackB.style.backgroundColor = "black";
-        blackB.style.borderRadius = "15px";
-        blackB.style.marginLeft = "auto";
-        blackB.style.marginRight = "auto";
-        blackB.style.textIndent = "20px";
-    
-        blackB.appendChild(document.createElement("br"));
-    
-        let nameLabel = document.createElement("p");
-        nameLabel.innerText = "Playlist Name:";
-        nameLabel.style.color = "cyan";
-        blackB.appendChild(nameLabel);
-    
-        let nameInput = document.createElement("input");
-        nameInput.id = "name";
-        nameInput.type = "text";
-        nameInput.placeholder = "Playlist name";
-        nameInput.style.backgroundColor = "silver";
-        nameInput.style.marginLeft = "20px";
-        blackB.appendChild(nameInput);
-        blackB.appendChild(document.createElement("br"));
-    
-        let selectL = document.createElement("p");
-        selectL.innerText = "Select the songs you want to add!";
-        selectL.style.color = "cyan";
-        blackB.appendChild(selectL);
-    
-        let playlistSongs = [];
-        for(let i = 0; i < songs.length; i++){
-            let temp = document.createElement("input");
-            let buttonValue = songs[i];
-            temp.type = "button";
-            temp.value = `${songs[i].strTrack}`;
-            temp.style.color = "cyan";
-            temp.style.backgroundColor = "black";
-            temp.style.textTransform = "capitalize";
-            temp.style.textDecoration = "underline";
-            temp.addEventListener("click", function(){
-                if(playlistSongs.includes(buttonValue)){
-                temp.style.color = "cyan";
-                playlistSongs.splice(playlistSongs.indexOf(buttonValue), 1);
-                } else {
-                temp.style.color = "gray";
-                playlistSongs.push(buttonValue);
-                }
-    
-                
-            })
-            temp.style.marginLeft = "10px";
-            blackB.appendChild(temp);       
-            blackB.appendChild(document.createElement("br"));
-            blackB.appendChild(document.createElement("br"));
-        }       
-    
-        let createButton = document.createElement("input");
-        createButton.type = "button";
-        createButton.value = "Create!";
-        createButton.style.color = "cyan";
-        createButton.style.backgroundColor = "black";
-        createButton.style.borderColor = "gray";
-        createButton.style.borderRadius = "15px";
-        createButton.style.marginLeft = "20px";
-        createButton.addEventListener("click", function(){
-            asyncCreateNewPlaylist(nameInput.value, playlistSongs, user);
-        });
-        
-    
-        blackB.appendChild(createButton);
-    
-        blackB.appendChild(document.createElement("br"));
-        blackB.appendChild(document.createElement("br"));
-    
-        document.querySelector("body").appendChild(document.createElement("br"));
-        document.querySelector("body").appendChild(document.createElement("br"));
-        document.querySelector("body").appendChild(homePage);
-        document.querySelector("body").appendChild(document.createElement("br"));
-        document.querySelector("body").appendChild(document.createElement("br"));
-        document.querySelector("body").appendChild(blackB);
-    
-    }
-
-    function renderStore(user, library, searchResults, userLists){
-        derenderPage();
-        
-        let container = document.createElement("div");
-    
-        let homePage = document.createElement("input");
-        homePage.type = "button";
-        homePage.value = "Return to HomePage";
-        homePage.style.width = "150px";
-        homePage.style.marginLeft = "20px";
-        homePage.style.backgroundColor = "black";
-        homePage.style.color = "cyan";
-        homePage.style.borderRadius = "15px";
-        homePage.style.borderColor = "gray";
-        homePage.addEventListener("mouseenter", function(){homePage.style.color = "silver";});
-        homePage.addEventListener("mouseleave", function(){homePage.style.color = "cyan";});
-        homePage.addEventListener("click", function(){asyncLoadPlaylists(user, library.name);});
+        */
 
         let gridContainer = document.createElement("div");
         gridContainer.style.display = "grid";
         gridContainer.style.gridTemplateColumns = "150px auto";
         gridContainer.style.backgroundColor = "";
         gridContainer.style.fontFamily = "Arial";
-        gridContainer.appendChild(document.createElement("br"));
-        gridContainer.appendChild(document.createElement("br"));
+
 
         let rightGrid = document.createElement("div");
         rightGrid.style.gridColumnStart = "2";
         rightGrid.style.gridColumnEnd = "2";
-        rightGrid.style.textAlign = "right";
+        rightGrid.style.textAlign = "left";
+
         
     
         let leftGrid = document.createElement("div");
         leftGrid.style.gridColumnStart = "1";
         leftGrid.style.gridColumnEnd = "1";
         leftGrid.style.textAlign = "center";
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+
 
         let leftBB = document.createElement("div");
         leftBB.style.backgroundColor = "black";
@@ -560,6 +471,206 @@ function renderLogin(){
         let createPlaylist = document.createElement("input");
         createPlaylist.type = "button";
         createPlaylist.value = "Create New\nPlaylist";
+        createPlaylist.style.color = "gray";
+        createPlaylist.style.backgroundColor = "black";
+        createPlaylist.style.textDecoration = "underline";
+        createPlaylist.style.wordBreak = "break-all";
+        createPlaylist.addEventListener("mouseenter", function(){createPlaylist.style.color = "silver";});
+        createPlaylist.addEventListener("mouseleave", function(){createPlaylist.style.color = "gray";});
+        
+        createPlaylist.addEventListener("click", function(){asyncLoadPlaylist(user, library, library.name, userLists, "true")});
+        leftBB.appendChild(createPlaylist);
+        leftBB.appendChild(document.createElement("br"));
+        leftBB.appendChild(document.createElement("br"));
+
+        leftGrid.appendChild(leftBB);
+
+
+        let blackB = document.createElement("div");
+        blackB.style.width = "80%";
+        blackB.style.backgroundColor = "black";
+        blackB.style.borderRadius = "15px";
+        blackB.style.marginLeft = "auto";
+        blackB.style.marginRight = "auto";
+        blackB.style.textIndent = "20px";
+        blackB.appendChild(document.createElement("br"));
+
+        
+    
+        let nameLabel = document.createElement("p");
+        nameLabel.innerText = "Playlist Name:";
+        nameLabel.style.color = "cyan";
+        blackB.appendChild(nameLabel);
+        blackB.appendChild(document.createElement("br"));
+
+        let nameInput = document.createElement("input");
+        nameInput.id = "name";
+        nameInput.type = "text";
+        nameInput.placeholder = "Playlist name";
+        nameInput.style.backgroundColor = "silver";
+        nameInput.style.marginLeft = "20px";
+        blackB.appendChild(nameInput);
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(document.createElement("br"));
+
+    
+        let selectL = document.createElement("p");
+        selectL.innerText = "Select the songs you want to add!";
+        selectL.style.color = "cyan";
+        blackB.appendChild(selectL);
+    
+        let playlistSongs = [];
+        for(let i = 0; i < songs.length; i++){
+            let temp = document.createElement("input");
+            let buttonValue = songs[i];
+            temp.type = "button";
+            temp.value = `${songs[i].strTrack}`;
+            temp.style.color = "cyan";
+            temp.style.backgroundColor = "black";
+            temp.style.textTransform = "capitalize";
+            temp.style.textDecoration = "underline";
+            temp.addEventListener("click", function(){
+                if(playlistSongs.includes(buttonValue)){
+                temp.style.color = "cyan";
+                playlistSongs.splice(playlistSongs.indexOf(buttonValue), 1);
+                } else {
+                temp.style.color = "gray";
+                playlistSongs.push(buttonValue);
+                }
+    
+                
+            })
+            temp.style.marginLeft = "10px";
+            blackB.appendChild(temp);       
+            blackB.appendChild(document.createElement("br"));
+            blackB.appendChild(document.createElement("br"));
+        }       
+    
+        let createButton = document.createElement("input");
+        createButton.type = "button";
+        createButton.value = "Create!";
+        createButton.style.color = "cyan";
+        createButton.style.backgroundColor = "black";
+        createButton.style.borderColor = "gray";
+        createButton.style.borderRadius = "15px";
+        createButton.style.marginLeft = "20px";
+        createButton.addEventListener("click", function(){
+            asyncCreateNewPlaylist(nameInput.value, playlistSongs, user, library, songs, userLists);
+            delay(1000).then(() => asyncLoadPlaylists(user, library.name, "creating"));
+        });
+        
+    
+        blackB.appendChild(createButton);
+    
+        blackB.appendChild(document.createElement("br"));
+        blackB.appendChild(document.createElement("br"));
+    
+        rightGrid.appendChild(blackB);
+        gridContainer.appendChild(leftGrid);
+        gridContainer.appendChild(rightGrid);
+        document.querySelector("body").appendChild(document.createElement("br"));
+        document.querySelector("body").appendChild(document.createElement("br"));
+
+        document.querySelector("body").appendChild(gridContainer);
+        document.querySelector("body").appendChild(document.createElement("br"));
+        //document.querySelector("body").appendChild(homePage);
+        document.querySelector("body").appendChild(document.createElement("br"));
+        document.querySelector("body").appendChild(document.createElement("br"));
+        
+    
+    }
+
+    function renderStore(user, library, searchResults, userLists){
+        derenderPage();
+        
+       
+        
+        /*
+        let homePage = document.createElement("input");
+        homePage.type = "button";
+        homePage.value = "Return to HomePage";
+        homePage.style.width = "150px";
+        homePage.style.marginLeft = "20px";
+        homePage.style.backgroundColor = "black";
+        homePage.style.color = "cyan";
+        homePage.style.borderRadius = "15px";
+        homePage.style.borderColor = "gray";
+        homePage.addEventListener("mouseenter", function(){homePage.style.color = "silver";});
+        homePage.addEventListener("mouseleave", function(){homePage.style.color = "cyan";});
+        homePage.addEventListener("click", function(){asyncLoadPlaylists(user, library.name);});
+        */
+
+        let gridContainer = document.createElement("div");
+        gridContainer.style.display = "grid";
+        gridContainer.style.gridTemplateColumns = "150px auto";
+        gridContainer.style.backgroundColor = "";
+        gridContainer.style.fontFamily = "Arial";
+
+
+        let rightGrid = document.createElement("div");
+        rightGrid.style.gridColumnStart = "2";
+        rightGrid.style.gridColumnEnd = "2";
+        rightGrid.style.textAlign = "center";
+        
+    
+        let leftGrid = document.createElement("div");
+        leftGrid.style.gridColumnStart = "1";
+        leftGrid.style.gridColumnEnd = "1";
+        leftGrid.style.textAlign = "center";
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+        leftGrid.appendChild(document.createElement("br"));
+
+
+        let leftBB = document.createElement("div");
+        leftBB.style.backgroundColor = "black";
+        leftBB.style.width = "120px";
+        leftBB.style.marginLeft = "auto";
+        leftBB.style.marginRight = "auto";
+        leftBB.style.borderRadius = "15px";
+        leftBB.appendChild(document.createElement("br"));
+
+        let storeButton = document.createElement("input");
+        storeButton.type = "button";
+        storeButton.value = "Store";
+        storeButton.style.color = "gray";
+        storeButton.style.backgroundColor = "black";
+        storeButton.style.textDecoration = "underline";
+        storeButton.addEventListener("mouseenter", function(){storeButton.style.color = "silver";});
+        storeButton.addEventListener("mouseleave", function(){storeButton.style.color = "gray";});
+        storeButton.addEventListener("click", function(){renderStore(user, library, "null", userLists);});
+        leftBB.appendChild(storeButton);
+        leftBB.appendChild(document.createElement("br"));
+        leftBB.appendChild(document.createElement("br"));
+    
+        
+        
+        for(let i = 0; i < userLists.length; i++){
+            let temp = document.createElement("input");
+            temp.type = "button";
+            temp.value = `${userLists[i]}`;
+           
+            temp.style.color = "cyan";
+            
+            temp.style.backgroundColor = "black";
+            temp.style.textTransform = "capitalize";
+            temp.style.textDecoration = "underline";
+            temp.addEventListener("mouseenter", function(){temp.style.color = "silver";});
+            temp.addEventListener("mouseleave", function(){
+            temp.style.color = "cyan";
+            });
+            temp.addEventListener("click", function(){asyncLoadPlaylist(user, library, `${temp.value}`, userLists, "false");});
+            
+            
+            leftBB.appendChild(temp);
+            leftBB.appendChild(document.createElement("br"));
+            leftBB.appendChild(document.createElement("br"));
+        }
+    
+        let createPlaylist = document.createElement("input");
+        createPlaylist.type = "button";
+        createPlaylist.value = "Create New\nPlaylist";
         createPlaylist.style.color = "cyan";
         createPlaylist.style.backgroundColor = "black";
         createPlaylist.style.textDecoration = "underline";
@@ -573,6 +684,30 @@ function renderLogin(){
         leftBB.appendChild(document.createElement("br"));
 
         leftGrid.appendChild(leftBB);
+
+        let loadimg = document.createElement("img");
+        loadimg.src = "Eclipse-1s-200px.gif";
+        
+
+        let loadDiv = document.createElement('div');
+        
+        loadDiv.style.position = "absolute";
+        loadDiv.style.top = 0;
+        
+        loadDiv.style.marginTop = "10%";
+        loadDiv.style.marginLeft = "35%";
+        loadDiv.style.marginRight = "auto";
+        loadDiv.style.zIndex = 3;
+        loadDiv.style.width = "400px";
+        loadDiv.style.height = "300px";
+        loadDiv.style.opacity = "0.75";
+        loadDiv.style.backgroundColor = "";
+        loadDiv.style.textAlign = "center";
+        loadDiv.style.display = "none";
+
+        loadDiv.appendChild(loadimg);
+        
+        
         
         let searchBar = document.createElement("input");
         searchBar.type = "text";
@@ -595,10 +730,12 @@ function renderLogin(){
         searchButton.style.color = "black";
         searchButton.addEventListener("click", async function(){
             if(typeof searchBar.value != 'undefined') {   
+                loadDiv.style.display = "block";
                 asyncSearchByArtist(user, searchBar.value, library, userLists);
             }
         })
-    
+
+
         let blackB = document.createElement("div");
         blackB.style.backgroundColor = "black";
         blackB.style.width = "75%";
@@ -609,16 +746,16 @@ function renderLogin(){
     
     
     
-        container.appendChild(document.createElement("br"));
-        container.appendChild(document.createElement("br"));
-        container.appendChild(searchBar);
-        container.appendChild(searchButton);
-        container.appendChild(document.createElement("br"));
-        container.appendChild(document.createElement("br"));
+        rightGrid.appendChild(document.createElement("br"));
+        rightGrid.appendChild(document.createElement("br"));
+        rightGrid.appendChild(searchBar);
+        rightGrid.appendChild(searchButton);
+        rightGrid.appendChild(document.createElement("br"));
+        rightGrid.appendChild(document.createElement("br"));
     
         let newSongs = []
         if(searchResults != "null") {
-            
+            loadDiv.style.display = "none";
             for(let i = 0; i < searchResults.length; i++){
                 let temp = document.createElement("input");
                 let buttonValue = searchResults[i];
@@ -679,14 +816,17 @@ function renderLogin(){
     }
      
 
-    container.appendChild(blackB);
-    container.style.textAlign = "center";
-    container.style.fontFamily = "Arial";
+    rightGrid.appendChild(blackB);
+    gridContainer.style.textAlign = "center";
+    gridContainer.style.fontFamily = "Arial";
     
+    gridContainer.appendChild(leftGrid);
+    gridContainer.append(rightGrid);
     document.querySelector("body").appendChild(document.createElement("br"));
     document.querySelector("body").appendChild(document.createElement("br"));
-    document.querySelector("body").appendChild(homePage);
-    document.querySelector("body").appendChild(container);
+    document.querySelector("body").appendChild(gridContainer);
+    rightGrid.appendChild(loadDiv);
+
 
     }
 
@@ -886,29 +1026,30 @@ function renderLogin(){
         }
     }
 
-    async function asyncLoadPlaylists(user, library){
+    async function asyncLoadPlaylists(user, libraryName, action){
 
         const url = `http://localhost:8080/users/user/${user.id}/lists`;
 
     try{
         let response = await fetch(url, { headers: {"Authorization": `Bearer ${inMemoryToken}`} }) 
         console.log(response);
-        console.log(library);
+        console.log(libraryName);
         
         let userLists = await response.json();
+        
         let creating = "false";
-        asyncLoadLibrary(user, library, userLists, creating);
+        asyncLoadLibrary(user, libraryName, userLists, creating, action); 
     }catch(error){
         console.log(`error is ${error}`);
     }
     }
 
-    async function asyncLoadLibrary(user, libraryName, userLists, creating){
+    async function asyncLoadLibrary(user, libraryName, userLists, creating, action){
         const url = `http://localhost:8080/lists/list?name=${libraryName}`;
         try{
             let response = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} });
             let library = await response.json();
-            asyncLoadPlaylist(user, library, libraryName, userLists, creating)
+            asyncLoadPlaylist(user, library, libraryName, userLists, creating, action)
         } catch (error){ 
             console.log(`Error is ${error}`);
         }
@@ -916,7 +1057,7 @@ function renderLogin(){
     }
 
 
-    async function asyncLoadPlaylist(user, library, playlistName, userLists, creating){
+    async function asyncLoadPlaylist(user, library, playlistName, userLists, creating, action){
 
         const url = `http://localhost:8080/lists/list?name=${playlistName}`;
 
@@ -925,10 +1066,15 @@ function renderLogin(){
             let playlist = await response.json();
             let songs = playlist.songs;
             
+            songs = songs.sort((a, b) => a.strTrack.localeCompare(b.strTrack));
+            console.log(songs);
+            if (action == "creating"){
+                createNewPlaylist(user, library, songs, userLists);
+            }
             if (creating == "false") {
             renderHomePage(user, library, playlistName, songs, userLists);
             } else {
-                createNewPlaylist(user, library, songs);
+                createNewPlaylist(user, library, songs, userLists);
             }
         } catch (error) {
             console.error(`Error is ${error}`);
@@ -936,7 +1082,7 @@ function renderLogin(){
     }
 
 
-    async function asyncCreateNewPlaylist(newName, newSongs, user) {
+    async function asyncCreateNewPlaylist(newName, newSongs, user, library, songs, userLists) {
         const url = 'http://localhost:8080/lists/create';
 
     let listObj = {
@@ -961,6 +1107,9 @@ function renderLogin(){
             asyncPutSongInPlaylist(playlistObj.id, newSongs[i]);
         }
         asyncMapListtoUser(playlistObj.id, user.id);
+    if(response.status == 200){
+        //createNewPlaylist(user, library, songs, userLists);
+    }
     } catch(error) {
         console.error(`Error is ${error}`);
     }
@@ -1042,11 +1191,11 @@ async function asyncSearchByArtist(user, artist, library, userLists){
 }
 
 async function asyncUpdatePassword(user, newPass){
-    const url = `http://localhost:8080/users/${user.id}`;
+    const url = `http://localhost:8080/users/${user.id}?password=${newPass}`;
     console.log(newPass);
-    let newPasswordObj = {
-        password: newPass
-    };
+    // let newPasswordObj = {
+    //     password: newPass
+    // };
 
     try{
         let response = await fetch(
@@ -1057,7 +1206,7 @@ async function asyncUpdatePassword(user, newPass){
 					"Authorization": "Bearer " + inMemoryToken,
                     'content-type':'application/json'
                 }),
-                body: JSON.stringify(newPasswordObj)
+                // body: JSON.stringify(newPasswordObj)
             }
         )
             
@@ -1066,6 +1215,14 @@ async function asyncUpdatePassword(user, newPass){
         console.log(`Error is ${error}`);
     }
 }
+
+
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+  }
+  
+  delay(1000).then(() => console.log('ran after 1 second1 passed'));
+
 
 async function asyncDeleteUser(user){
     
