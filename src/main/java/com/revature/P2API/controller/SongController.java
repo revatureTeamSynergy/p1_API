@@ -3,12 +3,14 @@ package com.revature.P2API.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,12 +42,14 @@ public class SongController {
 	private final SongService songService;
 	private final ArtistService artistService;
 	private final AlbumService albumService;
+	private final AlbumController albumController;
 	
 	@Autowired
-	public SongController(SongService songService, ArtistService artistService, AlbumService albumService) {
+	public SongController(SongService songService, ArtistService artistService, AlbumService albumService, AlbumController albumController) {
 		this.artistService = artistService;
 		this.songService = songService;
 		this.albumService = albumService;
+		this.albumController = albumController;
 		
 		this.restTemplate = new RestTemplate();
 	}
@@ -74,53 +78,44 @@ public class SongController {
 
 	@RequestMapping(value = "/song/id/{id}", method = RequestMethod.GET)
 	public @ResponseBody Object getSongById(@PathVariable String id)
-			throws JsonMappingException, JsonProcessingException {
+			throws Exception {
 
+		System.out.println("TOP OF GETSONGBYID");
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/track.php?h=" + id,
 				String.class);
-
+		System.out.println("RESPONSE = " + response);
 		if (response.equals("{\"track\":null}"))
 			result = response;
-
 		else {
 			String responseFormatted = response.substring(10, response.length() - 2);
-
 			result = (Song) mapper.readValue(responseFormatted, new TypeReference<Song>() {
-			});
-
-		}
-		
-		List<Song> songsWithVids = null;
-		
-		String response2 = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/mvid.php?i=" + ((Song) result).getIdArtist(),
-				String.class);
-
-		if (response.equals("{\"track\":null}"))
-			result = response2;
-
-		else {
-
-			String responseFormatted = response.substring(9, response.length() - 1);
-
-			songsWithVids = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
-			});
-
-		}
-		
-		for (Song songVid : songsWithVids) {
-			
-				if (songVid.getIdTrack() == ((Song) result).getIdTrack()) {
-					((Song) result).setStrMusicVid(songVid.getStrMusicVid());
-					((Song) result).setStrDescriptionEN(songVid.getStrDescriptionEN());
 				
-			}
+			});
+
+			Artist artist = artistService.getArtistByName( ((Song) result).getIdArtist());
+			System.out.println("ARTIST = " + artist.toString());
 			
-		}
+			Album album = (Album) albumController.getAlbumById(((Song) result).getIdAlbum());
+			
+			System.out.println("ALBUM = " + album.toString());
+	
+		((Song) result).setStrAlbumThumb(album.getStrAlbumThumb());
 		
-		createSong((Song) result);
+		throw new Exception();
+		}
+//		createSong((Song) result);
+//		
+//		
+//		return  (Song) result;
+//		}
+		return (Song) result;
 
-		return result;
-
+	}
+	
+	@PutMapping("/{id}")
+	public void updateSong(@PathVariable long id, @RequestParam() String strAlbumThumb) {
+		songService.updateSong(id, strAlbumThumb);
+		
 	}
 	
 	//http://localhost:8080/songs/artist?name=shakira
@@ -131,7 +126,7 @@ public class SongController {
 		List<Album> albums = albumService.getAlbumsByArtistId(artist.getIdArtist());
 		List<Song> songsWithVids = null;
 		List<Song> songs = songService.getSongsByArtistAlbums(albums);
-		
+		for (Song song : songs) song.setStrAlbumThumb(artist.getStrArtistThumb());
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/mvid.php?i=" + artist.getIdArtist().toString(),
 				String.class);
 		
@@ -148,11 +143,17 @@ public class SongController {
 			songsWithVids = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
 			});
 			
+
+			
 			for (Song songVid : songsWithVids) {
 				for (Song song : songs) {
+//					String thumb = albumService.getAlbumThumb(song.getIdAlbum());
+//					System.out.println(thumb);
+//					song.setStrAlbumThumb(thumb);
+//				
 					if (songVid.getIdTrack() == song.getIdTrack()) {
 						song.setStrMusicVid(songVid.getStrMusicVid());
-						song.setStrDescriptionEN(songVid.getStrDescriptionEN());
+						
 					}
 				}
 				
@@ -191,9 +192,14 @@ public class SongController {
 	}
 	
 	@PostMapping("/create")
-	public void createSong(@RequestBody Song song) {
+	public void createSong(@RequestBody Song song) throws JsonMappingException, JsonProcessingException {
+		System.out.println("START CREATE SONG");
+		System.out.println(song.toString());
+		String albumStr = albumService.getAlbumThumb(song.getIdAlbum());
+		song.setStrAlbumThumb(albumStr);
 		songService.createSong(song);
 	}
+	
 	
 	@DeleteMapping("/delete/{id}")
 	public void deleteUser(@PathVariable long id) {

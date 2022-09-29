@@ -2,6 +2,7 @@ package com.revature.P2API.models;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,9 +38,12 @@ public class Song {
 	
 	private String intTrackNumber;
 	
+	@Column(columnDefinition="text", length=10485760)
 	private String strMusicVid;
 	
-	private String strDescriptionEN;
+	@Column(columnDefinition="text", length=10485760)
+	private String strAlbumThumb;
+	
 	
 	@JsonIgnore
 	@ManyToMany(mappedBy="songs")
@@ -54,7 +58,7 @@ public class Song {
 	
 
 	public Song(String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum, String strArtist,
-			String intDuration, String strGenre, String intTrackNumber, Set<MusicList> lists, String strMusicVid, String strDescriptionEN) {
+			String intDuration, String strGenre, String intTrackNumber, Set<MusicList> lists, String strMusicVid) {
 		super();
 		this.idTrack = idTrack;
 		this.idAlbum = idAlbum;
@@ -67,7 +71,7 @@ public class Song {
 		this.intTrackNumber = intTrackNumber;
 		this.lists = lists;
 		this.strMusicVid = strMusicVid;
-		this.strDescriptionEN = strDescriptionEN;
+		
 	}
 
 	public Song(long id, String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum,
@@ -90,7 +94,28 @@ public class Song {
 	
 
 	public Song(String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum, String strArtist,
-			String intDuration, String strGenre, String intTrackNumber, String strMusicVid, String strDescriptionEN,
+			String intDuration, String strGenre, String intTrackNumber, String strMusicVid, String strAlbumThumb,
+			 Set<MusicList> lists) {
+		super();
+		this.idTrack = idTrack;
+		this.idAlbum = idAlbum;
+		this.idArtist = idArtist;
+		this.strTrack = strTrack;
+		this.strAlbum = strAlbum;
+		this.strArtist = strArtist;
+		this.intDuration = intDuration;
+		this.strGenre = strGenre;
+		this.intTrackNumber = intTrackNumber;
+		this.strMusicVid = strMusicVid;
+		this.strAlbumThumb = strAlbumThumb;
+		
+		this.lists = lists;
+	}
+
+
+
+	public Song(String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum, String strArtist,
+			String intDuration, String strGenre, String intTrackNumber, String strMusicVid,
 			Set<MusicList> lists) {
 		super();
 		this.idTrack = idTrack;
@@ -103,7 +128,6 @@ public class Song {
 		this.strGenre = strGenre;
 		this.intTrackNumber = intTrackNumber;
 		this.strMusicVid = strMusicVid;
-		this.strDescriptionEN = strDescriptionEN;
 		this.lists = lists;
 	}
 
@@ -134,20 +158,20 @@ public class Song {
 
 
 
-	public String getStrDescriptionEN() {
-		return strDescriptionEN;
-	}
-
-
-
-	public void setStrDescriptionEN(String strDescriptionEN) {
-		this.strDescriptionEN = strDescriptionEN;
-	}
-
-
-
 	public void setLists(Set<MusicList> lists) {
 		this.lists = lists;
+	}
+
+
+
+	public String getStrAlbumThumb() {
+		return strAlbumThumb;
+	}
+
+
+
+	public void setStrAlbumThumb(String strAlbumThumb) {
+		this.strAlbumThumb = strAlbumThumb;
 	}
 
 

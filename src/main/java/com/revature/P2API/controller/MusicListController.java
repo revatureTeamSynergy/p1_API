@@ -1,5 +1,6 @@
 package com.revature.P2API.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class MusicListController {
 	}*/
 	
 	@PutMapping("/{listId}/songs/{trackId}")
-	public MusicList addSongToList(@PathVariable long listId, @PathVariable String trackId) throws JsonMappingException, JsonProcessingException {
+	public MusicList addSongToList(@PathVariable long listId, @PathVariable String trackId, @RequestParam String strAlbumThumb) throws IOException {
 		MusicList list = listService.getListById(listId);
 		Song song = songService.getSongByTrackId(trackId);
 		
@@ -71,6 +72,7 @@ public class MusicListController {
 			return listService.saveList(list);
 			
 		}else if(song != null) {
+			song.setStrAlbumThumb(strAlbumThumb);
 			if (!list.getSongs().contains(song)) {
 				list.addSong(song);
 				return listService.saveList(list);

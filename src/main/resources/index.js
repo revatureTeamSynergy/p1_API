@@ -1116,8 +1116,8 @@ function renderLogin(){
 }
 
 async function asyncPutSongInPlaylist(playlistId, song) {
-    
-    const url = `http://localhost:8080/lists/${playlistId}/songs/${song.idTrack}`;
+    console.log(song.strAlbumThumb)
+    const url = `http://localhost:8080/lists/${playlistId}/songs/${song.idTrack}?strAlbumThumb=${song.strAlbumThumb}`;
     
     try{
         let response = await fetch(
@@ -1126,7 +1126,7 @@ async function asyncPutSongInPlaylist(playlistId, song) {
                 method: "PUT",
                 headers: new Headers({
 					"Authorization": "Bearer " + inMemoryToken,
-                    'content-type':'application/json'
+                    'Content-Type':'application/json'
                 })
             }
         )
@@ -1134,6 +1134,7 @@ async function asyncPutSongInPlaylist(playlistId, song) {
         
     }catch(error)
     {console.log(`error is ${error}`);} 
+    asyncPutSongInDatabaseANDLibrary(libraryID, song);
 }
 
 async function asyncMapListtoUser(listID, userID) {
@@ -1161,6 +1162,8 @@ async function asyncMapListtoUser(listID, userID) {
 
 async function asyncPutSongInDatabaseANDLibrary(libraryID, song){
     console.log(song);
+    console.log(song.idTrack);
+    console.log(song.strAlbumThumb);
     const url = `http://localhost:8080/songs/song/id/${song.idTrack}`
     
     console.log("Added!");
@@ -1169,11 +1172,11 @@ async function asyncPutSongInDatabaseANDLibrary(libraryID, song){
     
     let newSong = await response.json();
    
-    asyncPutSongInPlaylist(libraryID, newSong);
+   
     }catch (error) {
         console.log(`Error is ${error}`);
     }
-
+    // asyncPutSongInPlaylist(libraryID, newSong);
 }
 
 async function asyncSearchByArtist(user, artist, library, userLists){

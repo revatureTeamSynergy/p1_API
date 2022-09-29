@@ -1,8 +1,12 @@
 package com.revature.P2API.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +17,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.P2API.controller.AlbumController;
 import com.revature.P2API.models.Album;
 //import com.revature.P2API.repository.models.Song;
 import com.revature.P2API.models.Song;
+import com.revature.P2API.models.User;
 
 @Service
 public class SongService {
@@ -24,12 +30,15 @@ public class SongService {
 	ObjectMapper mapper = new ObjectMapper();
 	
 	final private SongRepository songRepository;
+	
+	final private AlbumController albumController;
 
 	@Autowired
-	public SongService(SongRepository songRepository) {
+	public SongService(SongRepository songRepository, AlbumController albumController) {
 		super();
 		this.restTemplate = new RestTemplate();
 		this.songRepository = songRepository;
+		this.albumController = albumController;
 	}
 	
 	public Song createSong(Song song) {
@@ -37,8 +46,8 @@ public class SongService {
 		
 	}
 	
-	public Song createSongByTrackId(String trackId) throws JsonMappingException, JsonProcessingException {
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/track.php?h=" + trackId,
+	public Song createSongByTrackId(String trackId) throws IOException {
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/track.php?h=" + trackId,
 				String.class);
 
 		if (response.equals("{\"track\":null}"))
@@ -51,7 +60,14 @@ public class SongService {
 			});
 
 		}
+		
+		Album album = (Album) albumController.getAlbumById(((Song) result).getIdAlbum());
+		
+		System.out.println("ALBUM = " + album.toString());
+
+		
 		Song song = (Song) result;
+		((Song) result).setStrAlbumThumb(album.getStrAlbumThumb());
 		return songRepository.save(song);
 	}
 	
@@ -96,7 +112,7 @@ public class SongService {
 	
 	private List<Song> getSongsByAlbumId(String albumId) throws JsonMappingException, JsonProcessingException {
 		
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/track.php?m=" + albumId,
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/track.php?m=" + albumId,
 				String.class);
 
 		if (response.equals("{\"track\":null}"))
@@ -116,5 +132,20 @@ public class SongService {
 	public List<Song> getSongs() {
 		return songRepository.findAll();
 	}
+
+	
+	@Transactional
+	public void updateSong(long id, String strAlbumThumb) {
+		Optional<Song> song = songRepository.findById(id);
+		if(!song.isPresent()) {
+			throw new IllegalStateException("No user with this id: "+ id);
+		}
+	
+		song.get().setStrAlbumThumb(strAlbumThumb);	
+		
+		
+	}
+
+	
 	
 }

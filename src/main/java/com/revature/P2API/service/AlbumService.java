@@ -24,7 +24,7 @@ public class AlbumService {
 	}
 	
 	public List<Album> getAlbumsByArtistId(String artistId) throws JsonMappingException, JsonProcessingException {
-		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/album.php?i=" + artistId,
+		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/album.php?i=" + artistId,
 				String.class);
 
 		if (response.equals("{\"album\":null}"))
@@ -39,6 +39,20 @@ public class AlbumService {
 		}
 	
 		return (List<Album>) result;
+	}
+	
+	public String getAlbumThumb(String albumId) throws JsonMappingException, JsonProcessingException {
+		String response = restTemplate.getForObject("https://theaudiodb.com/api/v1/json/523532/album.php?m=" + albumId,
+				String.class);
+
+			int start = response.indexOf("strAlbumThumb");
+		    int end = response.indexOf("strAlbumThumbHQ");
+			String result = response.substring(start + 16, end - 3);
+			System.out.println(result);
+
+		
+
+		return result;
 	}
 	
 }
