@@ -50,16 +50,6 @@ public class MusicListController {
 		return list2;
 	}
 	
-	/*
-	@PutMapping("/{listId}/songs/{songId}")
-	public MusicList addSongToList(@PathVariable long listId, @PathVariable long songId) {
-		MusicList list = listService.getListById(listId);
-		Song song = songService.getSongById(songId);
-		
-		list.addSong(song);
-		return listService.saveList(list);
-	}*/
-	
 	@PutMapping("/{listId}/songs/{trackId}")
 	public MusicList addSongToList(@PathVariable long listId, @PathVariable String trackId) throws JsonMappingException, JsonProcessingException {
 		MusicList list = listService.getListById(listId);

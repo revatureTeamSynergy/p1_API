@@ -3,6 +3,8 @@ package com.revature.P2API.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,6 +34,7 @@ import com.revature.P2API.service.SongService;
 @RequestMapping(path="/songs")
 @CrossOrigin("*")
 public class SongController {
+	Logger logger = LoggerFactory.getLogger(SongController.class);
 
 	private final RestTemplate restTemplate;
 	Object result = null;
@@ -56,9 +59,10 @@ public class SongController {
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/track.php?m=" + id,
 				String.class);
 
-		if (response.equals("{\"track\":null}"))
+		if (response.equals("{\"track\":null}")) {
+			logger.error("Unable to get song by album id");
 			result = response;
-
+		}
 		else {
 
 			String responseFormatted = response.substring(9, response.length() - 1);
@@ -79,9 +83,10 @@ public class SongController {
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/track.php?h=" + id,
 				String.class);
 
-		if (response.equals("{\"track\":null}"))
+		if (response.equals("{\"track\":null}")) {
+			logger.error("Unable to get song by id.");
 			result = response;
-
+		}
 		else {
 			String responseFormatted = response.substring(10, response.length() - 2);
 
@@ -149,6 +154,7 @@ public class SongController {
 		
 
 		if (response.equals("{\"mvids\":null}")) {
+			logger.error("Unable to get songs by artist");
 			System.out.println("Null response");
 			result = "";
 
@@ -195,6 +201,7 @@ public class SongController {
 						String.class);
 				
 				if (responseVids.equals("{\"mvids\":null}")) {
+					logger.error("Unable to get trending songs.");
 					System.out.println("Null response");
 					result = "";
 				
@@ -238,9 +245,10 @@ public class SongController {
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/mvid.php?i=" + artist.getIdArtist().toString(),
 				String.class);
 
-		if (response.equals("{\"track\":null}"))
+		if (response.equals("{\"track\":null}")) {
+			logger.error("Unable to get music videos by artist name.");
 			result = response;
-
+		}
 		else {
 
 			String responseFormatted = response.substring(9, response.length() - 1);

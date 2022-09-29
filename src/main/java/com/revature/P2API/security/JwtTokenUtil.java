@@ -5,14 +5,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.revature.P2API.controller.AlbumController;
 import com.revature.P2API.models.User;
 
 @Component
 public class JwtTokenUtil {
+	Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
 
     private final String jwtSecret = "CctlD5JL16m8wLTgsFNhzqjQP";
     private final String jwtIssuer = "com.revature";
@@ -46,6 +50,7 @@ public class JwtTokenUtil {
                 return true;
             }
         } catch (IllegalArgumentException e) {
+        	logger.error("JWT is invalid");
             System.out.println(String.format("JWT is invalid - {%s}", e.getMessage()));
         }
 

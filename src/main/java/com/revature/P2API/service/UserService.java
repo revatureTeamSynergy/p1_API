@@ -9,6 +9,8 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.revature.P2API.controller.AlbumController;
 import com.revature.P2API.controller.MusicListController;
 import com.revature.P2API.models.MusicList;
 import com.revature.P2API.models.User;
@@ -25,6 +28,7 @@ import com.revature.P2API.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
+	Logger logger = LoggerFactory.getLogger(UserService.class);
 	
 	private UserRepository userRepository;
 	
@@ -44,6 +48,7 @@ public class UserService implements UserDetailsService {
 	public User getUserById(long id) {
 		Optional<User> user = userRepository.findById(id);
 		if(!user.isPresent()) {
+			logger.error("Unable to ge user by id.");
 			throw new IllegalStateException("No user with this id: "+ id);
 		}
 		
@@ -64,7 +69,8 @@ public class UserService implements UserDetailsService {
 	public void deleteUserById(long id) {
 		boolean isUser = userRepository.existsById(id);
 		if(!isUser){
-			throw new IllegalStateException("Unable to delete because no user with this id exist");
+			logger.error("Uanble to de user by id.");
+			throw new IllegalStateException("Unable to delete by id.");
 		}
 		userRepository.deleteById(id);
 		
@@ -89,6 +95,7 @@ public class UserService implements UserDetailsService {
 	public void updateUser(long id, String password) {
 		Optional<User> user = userRepository.findById(id);
 		if(!user.isPresent()) {
+			logger.error("Unable to update user.");
 			throw new IllegalStateException("No user with this id: "+ id);
 		}
 		
@@ -103,6 +110,7 @@ public class UserService implements UserDetailsService {
 		User user = getByUsername(username);
 
         if (user == null) {
+        	logger.error("Unable to load user by username.");
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         } else {
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();

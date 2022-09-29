@@ -2,6 +2,8 @@ package com.revature.P2API.controller;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +21,11 @@ import com.revature.P2API.models.Artist;
 
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
-// Test1
 @RestController
 @RequestMapping("/album")
 public class AlbumController {
-
+	Logger logger = LoggerFactory.getLogger(AlbumController.class);
+	
 	private final RestTemplate restTemplate;
 	Object result = null;
 	ObjectMapper mapper = new ObjectMapper();
@@ -38,9 +40,10 @@ public class AlbumController {
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/album.php?m=" + id,
 				String.class);
 
-		if (response.equals("{\"album\":null}"))
+		if (response.equals("{\"album\":null}")) {
+			logger.error("Unable to get album by id");
 			result = response;
-
+		}
 		else {
 
 			String responseFormatted = response.substring(10, response.length() - 2);
@@ -61,9 +64,10 @@ public class AlbumController {
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/album.php?i=" + id,
 				String.class);
 
-		if (response.equals("{\"album\":null}"))
+		if (response.equals("{\"album\":null}")) {
+			logger.error("Unable to get albums by artist id.");
 			result = response;
-
+		}
 		else {
 			String responseFormatted = response.substring(9, response.length() - 1);
 
