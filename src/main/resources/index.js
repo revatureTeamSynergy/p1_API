@@ -255,8 +255,6 @@ function renderLogin(){
         rightBB.style.textAlign = "left";
         rightBB.style.borderRadius = "15px";
         
-        let player = document.createElement("div");
-        
     
         let storeButton = document.createElement("input");
         storeButton.type = "button";
@@ -266,7 +264,7 @@ function renderLogin(){
         storeButton.style.textDecoration = "underline";
         storeButton.addEventListener("mouseenter", function(){storeButton.style.color = "silver";});
         storeButton.addEventListener("mouseleave", function(){storeButton.style.color = "cyan";});
-        storeButton.addEventListener("click", function(){renderStore(user, library, "null");});
+        storeButton.addEventListener("click", function(){renderStore(user, library, "null", userLists);});
         leftBB.appendChild(storeButton);
         leftBB.appendChild(document.createElement("br"));
         leftBB.appendChild(document.createElement("br"));
@@ -378,7 +376,7 @@ function renderLogin(){
         document.querySelector("body").appendChild(gridContainer);
     } 
 
-    function createNewPlaylist(user, library, songs){
+    function createNewPlaylist(user, library, songs, userLists){
         derenderPage();
         
         let homePage = document.createElement("input");
@@ -477,7 +475,7 @@ function renderLogin(){
     
     }
 
-    function renderStore(user, library, searchResults){
+    function renderStore(user, library, searchResults, userLists){
         derenderPage();
         
         let container = document.createElement("div");
@@ -494,6 +492,87 @@ function renderLogin(){
         homePage.addEventListener("mouseenter", function(){homePage.style.color = "silver";});
         homePage.addEventListener("mouseleave", function(){homePage.style.color = "cyan";});
         homePage.addEventListener("click", function(){asyncLoadPlaylists(user, library.name);});
+
+        let gridContainer = document.createElement("div");
+        gridContainer.style.display = "grid";
+        gridContainer.style.gridTemplateColumns = "150px auto";
+        gridContainer.style.backgroundColor = "";
+        gridContainer.style.fontFamily = "Arial";
+        gridContainer.appendChild(document.createElement("br"));
+        gridContainer.appendChild(document.createElement("br"));
+
+        let rightGrid = document.createElement("div");
+        rightGrid.style.gridColumnStart = "2";
+        rightGrid.style.gridColumnEnd = "2";
+        rightGrid.style.textAlign = "right";
+        
+    
+        let leftGrid = document.createElement("div");
+        leftGrid.style.gridColumnStart = "1";
+        leftGrid.style.gridColumnEnd = "1";
+        leftGrid.style.textAlign = "center";
+
+        let leftBB = document.createElement("div");
+        leftBB.style.backgroundColor = "black";
+        leftBB.style.width = "120px";
+        leftBB.style.marginLeft = "auto";
+        leftBB.style.marginRight = "auto";
+        leftBB.style.borderRadius = "15px";
+        leftBB.appendChild(document.createElement("br"));
+
+        let storeButton = document.createElement("input");
+        storeButton.type = "button";
+        storeButton.value = "Store";
+        storeButton.style.color = "cyan";
+        storeButton.style.backgroundColor = "black";
+        storeButton.style.textDecoration = "underline";
+        storeButton.addEventListener("mouseenter", function(){storeButton.style.color = "silver";});
+        storeButton.addEventListener("mouseleave", function(){storeButton.style.color = "cyan";});
+        storeButton.addEventListener("click", function(){renderStore(user, library, "null", userLists);});
+        leftBB.appendChild(storeButton);
+        leftBB.appendChild(document.createElement("br"));
+        leftBB.appendChild(document.createElement("br"));
+    
+        
+        
+        for(let i = 0; i < userLists.length; i++){
+            let temp = document.createElement("input");
+            temp.type = "button";
+            temp.value = `${userLists[i]}`;
+           
+            temp.style.color = "cyan";
+            
+            temp.style.backgroundColor = "black";
+            temp.style.textTransform = "capitalize";
+            temp.style.textDecoration = "underline";
+            temp.addEventListener("mouseenter", function(){temp.style.color = "silver";});
+            temp.addEventListener("mouseleave", function(){
+            temp.style.color = "cyan";
+            });
+            temp.addEventListener("click", function(){asyncLoadPlaylist(user, library, `${temp.value}`, userLists, "false");});
+            
+            
+            leftBB.appendChild(temp);
+            leftBB.appendChild(document.createElement("br"));
+            leftBB.appendChild(document.createElement("br"));
+        }
+    
+        let createPlaylist = document.createElement("input");
+        createPlaylist.type = "button";
+        createPlaylist.value = "Create New\nPlaylist";
+        createPlaylist.style.color = "cyan";
+        createPlaylist.style.backgroundColor = "black";
+        createPlaylist.style.textDecoration = "underline";
+        createPlaylist.style.wordBreak = "break-all";
+        createPlaylist.addEventListener("mouseenter", function(){createPlaylist.style.color = "silver";});
+        createPlaylist.addEventListener("mouseleave", function(){createPlaylist.style.color = "cyan";});
+        
+        createPlaylist.addEventListener("click", function(){asyncLoadPlaylist(user, library, library.name, userLists, "true")});
+        leftBB.appendChild(createPlaylist);
+        leftBB.appendChild(document.createElement("br"));
+        leftBB.appendChild(document.createElement("br"));
+
+        leftGrid.appendChild(leftBB);
         
         let searchBar = document.createElement("input");
         searchBar.type = "text";
@@ -516,7 +595,7 @@ function renderLogin(){
         searchButton.style.color = "black";
         searchButton.addEventListener("click", async function(){
             if(typeof searchBar.value != 'undefined') {   
-                asyncSearchByArtist(user, searchBar.value, library);
+                asyncSearchByArtist(user, searchBar.value, library, userLists);
             }
         })
     
@@ -948,14 +1027,14 @@ async function asyncPutSongInDatabaseANDLibrary(libraryID, song){
 
 }
 
-async function asyncSearchByArtist(user, artist, library){
+async function asyncSearchByArtist(user, artist, library, userLists){
     const url = `http://localhost:8080/songs/artist?name=${artist}`;
     
     try{
         let result = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} })
         let songs = await result.json();
         console.log(songs)
-        renderStore(user, library, songs);
+        renderStore(user, library, songs, userLists);
     } catch(error){
         console.log(`Error is ${error}`);
     }
