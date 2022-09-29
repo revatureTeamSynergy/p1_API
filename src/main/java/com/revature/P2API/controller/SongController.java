@@ -101,11 +101,11 @@ public class SongController {
 	
 		((Song) result).setStrAlbumThumb(album.getStrAlbumThumb());
 		
-		throw new Exception();
+		
+		
+		createSong((Song) result);
+//		
 		}
-//		createSong((Song) result);
-//		
-//		
 //		return  (Song) result;
 //		}
 		return (Song) result;

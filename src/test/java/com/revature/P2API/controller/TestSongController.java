@@ -45,7 +45,7 @@ public class TestSongController {
 	}
 
 	@Test
-	void getSongByIdIncorrect() throws IOException {
+	void getSongByIdIncorrect() throws Exception {
 
 		Object song = sCon.getSongById("1");
 
