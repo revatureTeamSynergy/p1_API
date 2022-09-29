@@ -1,5 +1,6 @@
 package com.revature.P2API.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -24,8 +25,7 @@ public class Album {
 	private String strReleaseFormat;
 	
 	private String strAlbumThumb;
-	
-	private String strDescriptionEN;
+
 	
 	private String intScore;
 	
@@ -35,6 +35,47 @@ public class Album {
 	public Album() {
 		super();
 	}
+	
+	
+
+	public Album(String idAlbum, String idArtist, String strAlbum, String strArtist, String intYearReleased,
+			String strStyle, String strGenre, String strLabel, String strReleaseFormat, String strAlbumThumb, String intScore, String strMood) {
+		super();
+		this.idAlbum = idAlbum;
+		this.idArtist = idArtist;
+		this.strAlbum = strAlbum;
+		this.strArtist = strArtist;
+		this.intYearReleased = intYearReleased;
+		this.strStyle = strStyle;
+		this.strGenre = strGenre;
+		this.strLabel = strLabel;
+		this.strReleaseFormat = strReleaseFormat;
+		this.strAlbumThumb = strAlbumThumb;
+		this.intScore = intScore;
+		this.strMood = strMood;
+	}
+
+
+
+	public Album(String idArtist, String strAlbum, String strArtist, String intYearReleased, String strStyle,
+			String strGenre, String strLabel, String strReleaseFormat, String strAlbumThumb,
+			String intScore, String strMood) {
+		super();
+		this.idArtist = idArtist;
+		this.strAlbum = strAlbum;
+		this.strArtist = strArtist;
+		this.intYearReleased = intYearReleased;
+		this.strStyle = strStyle;
+		this.strGenre = strGenre;
+		this.strLabel = strLabel;
+		this.strReleaseFormat = strReleaseFormat;
+		this.strAlbumThumb = strAlbumThumb;
+	
+		this.intScore = intScore;
+		this.strMood = strMood;
+	}
+
+
 
 	public String getIdAlbum() {
 		return idAlbum;
@@ -116,13 +157,7 @@ public class Album {
 		this.strAlbumThumb = strAlbumThumb;
 	}
 
-	public String getStrDescriptionEN() {
-		return strDescriptionEN;
-	}
 
-	public void setStrDescriptionEN(String strDescriptionEN) {
-		this.strDescriptionEN = strDescriptionEN;
-	}
 
 	public String getIntScore() {
 		return intScore;

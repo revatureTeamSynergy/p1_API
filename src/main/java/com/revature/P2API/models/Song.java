@@ -2,10 +2,12 @@ package com.revature.P2API.models;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,6 +42,20 @@ public class Song {
 	private String strMusicVid;
 	
 	private String strDescriptionEN;
+	
+
+
+
+	@Column(columnDefinition="text", length=10485760)
+	private String strAlbumThumb;
+	
+	private String strArtistThumb;
+	
+	private String strArtistLogo;
+	
+	private String strArtistBanner;
+	
+	
 	
 	@JsonIgnore
 	@ManyToMany(mappedBy="songs")
@@ -88,6 +104,31 @@ public class Song {
 
 
 	
+
+	public Song(String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum, String strArtist,
+			String intDuration, String strGenre, String intTrackNumber, String strMusicVid, String strDescriptionEN,
+			String strAlbumThumb, String strArtistThumb, String strArtistLogo, String strArtistBanner,
+			Set<MusicList> lists) {
+		super();
+		this.idTrack = idTrack;
+		this.idAlbum = idAlbum;
+		this.idArtist = idArtist;
+		this.strTrack = strTrack;
+		this.strAlbum = strAlbum;
+		this.strArtist = strArtist;
+		this.intDuration = intDuration;
+		this.strGenre = strGenre;
+		this.intTrackNumber = intTrackNumber;
+		this.strMusicVid = strMusicVid;
+		this.strDescriptionEN = strDescriptionEN;
+		this.setStrAlbumThumb(strAlbumThumb);
+		this.setStrArtistThumb(strArtistThumb);
+		this.setStrArtistLogo(strArtistLogo);
+		this.setStrArtistBanner(strArtistBanner);
+		this.lists = lists;
+	}
+
+
 
 	public Song(String idTrack, String idAlbum, String idArtist, String strTrack, String strAlbum, String strArtist,
 			String intDuration, String strGenre, String intTrackNumber, String strMusicVid, String strDescriptionEN,
@@ -226,6 +267,54 @@ public class Song {
 	
 	public Set<MusicList> getLists() {
 		return lists;
+	}
+
+
+
+	public String getStrAlbumThumb() {
+		return strAlbumThumb;
+	}
+
+
+
+	public void setStrAlbumThumb(String strAlbumThumb) {
+		this.strAlbumThumb = strAlbumThumb;
+	}
+
+
+
+	public String getStrArtistThumb() {
+		return strArtistThumb;
+	}
+
+
+
+	public void setStrArtistThumb(String strArtistThumb) {
+		this.strArtistThumb = strArtistThumb;
+	}
+
+
+
+	public String getStrArtistLogo() {
+		return strArtistLogo;
+	}
+
+
+
+	public void setStrArtistLogo(String strArtistLogo) {
+		this.strArtistLogo = strArtistLogo;
+	}
+
+
+
+	public String getStrArtistBanner() {
+		return strArtistBanner;
+	}
+
+
+
+	public void setStrArtistBanner(String strArtistBanner) {
+		this.strArtistBanner = strArtistBanner;
 	}
 
 /*

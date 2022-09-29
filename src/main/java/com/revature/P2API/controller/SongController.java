@@ -90,36 +90,47 @@ public class SongController {
 
 		}
 		
-		List<Song> songsWithVids = null;
+//		List<Song> songsWithVids = null;
+//		
+//		String response2 = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/mvid.php?i=" + ((Song) result).getIdArtist(),
+//				String.class);
+//
+//		if (response.equals("{\"track\":null}"))
+//			result = response2;
+//
+//		else {
+//
+//			String responseFormatted = response.substring(9, response.length() - 1);
+//
+//			songsWithVids = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
+//			});
+//
+//		}
+//		
+//		for (Song songVid : songsWithVids) {
+//			
+//				if (songVid.getIdTrack() == ((Song) result).getIdTrack()) {
+//					((Song) result).setStrMusicVid(songVid.getStrMusicVid());
+//					((Song) result).setStrDescriptionEN(songVid.getStrDescriptionEN());
+//				
+//			}
+//			
+//		}
 		
-		String response2 = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/2/mvid.php?i=" + ((Song) result).getIdArtist(),
-				String.class);
-
-		if (response.equals("{\"track\":null}"))
-			result = response2;
-
-		else {
-
-			String responseFormatted = response.substring(9, response.length() - 1);
-
-			songsWithVids = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
-			});
-
-		}
+		String thumb = albumService.getAlbumThumb((((Song) result).getIdAlbum()));
+		String dog = "dog";
+		System.out.println(dog);
 		
-		for (Song songVid : songsWithVids) {
-			
-				if (songVid.getIdTrack() == ((Song) result).getIdTrack()) {
-					((Song) result).setStrMusicVid(songVid.getStrMusicVid());
-					((Song) result).setStrDescriptionEN(songVid.getStrDescriptionEN());
-				
-			}
-			
-		}
+		System.out.println(thumb);
+		
+//		song.setStrArtistBanner(newSongArtist.getStrArtistBanner());
+//		song.setStrArtistLogo(newSongArtist.getStrArtistLogo());
+//		song.setStrArtistThumb(newSongArtist.getStrArtistLogo());
+		((Song) result).setStrAlbumThumb(thumb);
 		
 		createSong((Song) result);
 
-		return result;
+		return (Song)result;
 
 	}
 	
@@ -166,6 +177,59 @@ public class SongController {
 		return songs;
 	}
 	
+	@GetMapping("/topsongs")
+	public List<Song> getTrendingSongs() throws JsonMappingException, JsonProcessingException{
+//		Artist artist = artistService.getArtistByName(name);
+//		
+//		List<Album> albums = albumService.getAlbumsByArtistId(artist.getIdArtist());
+		List<Song> songsWithVids = null;
+		List<Song> trending = songService.getTrendingSongs();
+		String artistId = trending.get(0).getIdArtist();
+		System.out.println("artist Id at start " + artistId);
+		
+			
+			for (Song trendingSong : trending) {
+				
+				
+				String responseVids = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/mvid.php?i=" + artistId,
+						String.class);
+				
+				if (responseVids.equals("{\"mvids\":null}")) {
+					System.out.println("Null response");
+					result = "";
+				
+					
+				}	else {
+					
+					String responseFormatted = responseVids.substring(9, responseVids.length() - 1);
+					
+					songsWithVids = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
+					});
+				
+				
+				
+				
+				for (Song songVid : songsWithVids) {
+					artistId = trendingSong.getIdArtist();
+					System.out.println("artist Id in loop " + artistId);
+					System.out.println();
+					if (songVid.getIdTrack() == trendingSong.getIdTrack()) {
+						trendingSong.setStrMusicVid(songVid.getStrMusicVid());
+						trendingSong.setStrDescriptionEN(songVid.getStrDescriptionEN());
+					}
+				}
+			
+		}
+		
+		
+	
+		
+		}
+		
+		
+		return trending;
+	}
+	
 	@GetMapping("/videos/artist")
 	public @ResponseBody Object getMusicVideosByArtistName(@RequestParam String id) throws JsonMappingException, JsonProcessingException{
 		Artist artist = artistService.getArtistByName(id);
@@ -191,7 +255,7 @@ public class SongController {
 	}
 	
 	@PostMapping("/create")
-	public void createSong(@RequestBody Song song) {
+	public void createSong(@RequestBody Song song) throws JsonMappingException, JsonProcessingException {
 		songService.createSong(song);
 	}
 	
