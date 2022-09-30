@@ -785,6 +785,23 @@ function renderLogin(){
         })
 
 
+        let topButton = document.createElement("input");
+        topButton.type = "button";
+        topButton.value = "Get Trending Songs!"
+        topButton.style.borderRadius = "15px";
+        topButton.style.backgroundColor = "gray";
+        topButton.style.borderColor = "gray";
+        topButton.style.textAlign = "center";
+        topButton.style.marginLeft = "10px";
+        topButton.style.color = "black";
+        topButton.addEventListener("click", async function(){
+              
+                loadDiv.style.display = "block";
+                asyncGetTopSongs(user, library, "null", userLists);
+            
+        });
+
+
         let blackB = document.createElement("div");
         blackB.style.backgroundColor = "black";
         blackB.style.width = "75%";
@@ -801,6 +818,10 @@ function renderLogin(){
         rightGrid.appendChild(searchButton);
         rightGrid.appendChild(document.createElement("br"));
         rightGrid.appendChild(document.createElement("br"));
+        rightGrid.appendChild(topButton);
+        rightGrid.appendChild(document.createElement("br"));
+        rightGrid.appendChild(document.createElement("br"));
+
     
         let newSongs = []
         if(searchResults != "null") {
@@ -1287,7 +1308,7 @@ function delay(time) {
 
 async function asyncDeleteUser(user){
     
-    const url = `http://localhost:8080/users/delete/${user.id}`
+    const url = `http://localhost:8080/users/delete/${user.id}`;
 
     try{
         let result = await fetch(
@@ -1304,4 +1325,20 @@ async function asyncDeleteUser(user){
     }catch(error){
         console.log(`error is ${error}`);
     }
+}
+
+
+async function asyncGetTopSongs(user, library, searchResults, userLists){
+
+    const url = `http://localhost:8080/songs/topsongs`;
+
+    try{
+        let result = await fetch(url, { headers: {"Authorization": "Bearer " + inMemoryToken, 'Content-Type': 'application/json'} })
+        let songs = await result.json();
+        console.log(songs)
+        renderStore(user, library, songs, userLists);
+    } catch(error){
+        console.log(`Error is ${error}`);
+    }
+
 }
