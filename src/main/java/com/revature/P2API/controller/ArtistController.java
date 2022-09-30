@@ -2,6 +2,8 @@ package com.revature.P2API.controller;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,8 @@ import com.revature.P2API.models.Artist;
 @RequestMapping("/artist")
 @CrossOrigin("*")
 public class ArtistController {
-
+	Logger logger = LoggerFactory.getLogger(ArtistController.class);
+	
 	private final RestTemplate restTemplate;
 	Object result = null;
 	ObjectMapper mapper = new ObjectMapper();
@@ -35,9 +38,10 @@ public class ArtistController {
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/search.php?s=" + id,
 				String.class);
 
-		if (response.equals("{\"artists\":null}"))
+		if (response.equals("{\"artists\":null}")) {
+			logger.error("Unable to get artist by name.");
 			result = response;
-
+		}
 		else {
 
 			String responseFormatted = response.substring(12, response.length() - 2);
@@ -58,9 +62,10 @@ public class ArtistController {
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/artist.php?i=" + id,
 				String.class);
 
-		if (response.equals("{\"artists\":null}"))
+		if (response.equals("{\"artists\":null}")) {
+			logger.error("Unable to get artist by id.");
 			result = response;
-
+		}
 		else {
 
 			String responseFormatted = response.substring(12, response.length() - 2);

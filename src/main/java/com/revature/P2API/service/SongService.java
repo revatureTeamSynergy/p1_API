@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,6 +27,8 @@ import com.revature.P2API.models.User;
 
 @Service
 public class SongService {
+	Logger logger = LoggerFactory.getLogger(SongService.class);
+	
 	private final RestTemplate restTemplate;
 	Object result = null;
 	ObjectMapper mapper = new ObjectMapper();
@@ -50,9 +54,10 @@ public class SongService {
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/track.php?h=" + trackId,
 				String.class);
 
-		if (response.equals("{\"track\":null}"))
+		if (response.equals("{\"track\":null}")) {
+			logger.error("Unable to create song by track id");
 			result = response;
-
+		}
 		else {
 			String responseFormatted = response.substring(10, response.length() - 2);
 
@@ -74,6 +79,7 @@ public class SongService {
 	public Song getSongById(long id) {
 		Optional<Song> song = songRepository.findById(id);
 		if(!song.isPresent()) {
+			logger.error("Unable to ge song by id");
 			throw new IllegalStateException("No song with this id: "+ id);
 			//return null;
 		}
@@ -92,6 +98,7 @@ public class SongService {
 	public void deleteSongById(long id) {
 		boolean isUser = songRepository.existsById(id);
 		if(!isUser){
+			logger.error("Unable to delete song by id");
 			throw new IllegalStateException("Unable to delete because no song with this id exist");
 		}
 		songRepository.deleteById(id);
@@ -115,9 +122,10 @@ public class SongService {
 		String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/track.php?m=" + albumId,
 				String.class);
 
-		if (response.equals("{\"track\":null}"))
+		if (response.equals("{\"track\":null}")) {
+			logger.error("Unable to ge songs by album id.");
 			result = response;
-
+		}
 		else {
 
 			String responseFormatted = response.substring(9, response.length() - 1);
@@ -138,6 +146,7 @@ public class SongService {
 	public void updateSong(long id, String strAlbumThumb) {
 		Optional<Song> song = songRepository.findById(id);
 		if(!song.isPresent()) {
+			logger.error("Unable to update song.");
 			throw new IllegalStateException("No user with this id: "+ id);
 		}
 	
