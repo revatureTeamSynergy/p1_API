@@ -145,6 +145,16 @@ public class SongService {
 		
 		
 	}
+	
+	public List<Song> getTrendingSongs() throws JsonMappingException, JsonProcessingException {
+      String response = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/trending.php?country=us&type=itunes&format=singles", String.class);
+      String responseFormatted = response.substring(12, response.length() - 1);
+
+      result = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
+      });
+      return (List<Song>) result;
+
+  }
 
 	
 	
