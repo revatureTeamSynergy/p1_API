@@ -273,6 +273,7 @@ public class SongController {
 	
 	@GetMapping
 	public List<Song> getSongs() {
+		logger.error("Testing logging!");
 		return songService.getSongs();
 	}
 	
