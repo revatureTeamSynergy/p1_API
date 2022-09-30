@@ -1055,7 +1055,10 @@ function renderLogin(){
             localStorage.setItem('user', JSON.stringify(user));
             const localstorage_user = JSON.parse(localStorage.getItem('user'));
             const inMemoryToken = localstorage_user.access_token;
-    
+            setTimeout(function(){
+
+
+            }, 500); 
             asyncLoadPlaylists(user, `${user.username}'s  Library`);
             
         }catch(error){
