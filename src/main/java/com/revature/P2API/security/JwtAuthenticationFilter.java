@@ -1,7 +1,7 @@
 package com.revature.P2API.security;
 
 import java.io.IOException;
-
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +50,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,
-                Optional.ofNullable(userDetails).map(UserDetails::getAuthorities).orElse(List.of())
-        );
+                Optional.ofNullable(userDetails).map(UserDetails::getAuthorities).orElse(Collections.emptyList()));
+        ;
 
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

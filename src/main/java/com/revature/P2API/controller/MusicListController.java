@@ -75,8 +75,9 @@ public class MusicListController {
 			song.setStrAlbumThumb(strAlbumThumb);
 			if (!list.getSongs().contains(song)) {
 				list.addSong(song);
+				
 				return listService.saveList(list);
-			}
+			} else list.updateSong(song);
 		}
 		return list;
 	}
