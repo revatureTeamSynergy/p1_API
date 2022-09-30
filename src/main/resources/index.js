@@ -508,6 +508,7 @@ function renderLogin(){
            
             temp.style.color = "cyan";
             
+            
             temp.style.backgroundColor = "black";
             temp.style.textTransform = "capitalize";
             temp.style.textDecoration = "underline";
@@ -576,6 +577,12 @@ function renderLogin(){
     
         let playlistSongs = [];
         for(let i = 0; i < songs.length; i++){
+
+            let tempImg = document.createElement("img");
+            tempImg.src = `${songs[i].strAlbumThumb}`;
+            tempImg.style.width = "60px";
+            tempImg.style.height = "60px";
+
             let temp = document.createElement("input");
             let buttonValue = songs[i];
             temp.type = "button";
@@ -596,6 +603,7 @@ function renderLogin(){
                 
             })
             temp.style.marginLeft = "10px";
+            blackB.appendChild(tempImg);
             blackB.appendChild(temp);       
             blackB.appendChild(document.createElement("br"));
             blackB.appendChild(document.createElement("br"));
@@ -609,8 +617,8 @@ function renderLogin(){
         createButton.style.borderColor = "gray";
         createButton.style.borderRadius = "15px";
         createButton.style.marginLeft = "20px";
-        createButton.addEventListener("click", function(){
-            asyncCreateNewPlaylist(nameInput.value, playlistSongs, user, library, songs, userLists);
+        createButton.addEventListener("click", async function(){
+            await asyncCreateNewPlaylist(nameInput.value, playlistSongs, user, library, songs, userLists);
             delay(2000).then(() => asyncLoadPlaylists(user, library.name, "creating"));
         });
         
@@ -691,6 +699,8 @@ function renderLogin(){
             temp.value = `${userLists[i]}`;
            
             temp.style.color = "cyan";
+
+            
             
             temp.style.backgroundColor = "black";
             temp.style.textTransform = "capitalize";
@@ -1176,9 +1186,7 @@ function renderLogin(){
             await asyncPutSongInPlaylist(playlistObj.id, newSongs[i]);
         }
         asyncMapListtoUser(playlistObj.id, user.id);
-    if(response.status == 200){
-        //createNewPlaylist(user, library, songs, userLists);
-    }
+
     } catch(error) {
         console.error(`Error is ${error}`);
     }
