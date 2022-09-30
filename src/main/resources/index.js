@@ -434,7 +434,7 @@ function renderLogin(){
         userinfoButton.addEventListener("mouseleave", function(){userinfoButton.style.color = "white";});
         userinfoButton.onclick = function(){loadUserInfo(user);} 
         
-    
+        
         
        rightBB.appendChild(document.createElement('br'));
         rightGrid.appendChild(userinfoButton);
@@ -830,21 +830,7 @@ function renderLogin(){
                 
             }
         }
-        let L1 = document.createElement("p");
-        L1.innerText = "Loading";
-        L1.style.color = "cyan";
-        let L2 = document.createElement("p");
-        L2.innerText = "Loading.";
-        L2.style.color = "cyan";
-        let L3 = document.createElement("p");
-        L3.innerText = "Loading..";
-        L3.style.color = "cyan";
-        let L4 = document.createElement("p");
-        L4.innerText = "Loading...";
-        L4.style.color = "cyan";
-        let done = document.createElement("p");
-        done.innerText = "Added!";
-        done.style.color = "cyan";
+   
     
         let addSongs = document.createElement("input");
         addSongs.type = "button";
@@ -856,18 +842,13 @@ function renderLogin(){
         addSongs.style.color = "black";
         console.log(newSongs);
         addSongs.addEventListener("click", async function(){
-            blackB.appendChild(L1);
+            
             for (let i = 0; i < newSongs.length; i++){
         
             await asyncPutSongInPlaylist(library.id, newSongs[i]);
-            let j = 0;
-            if (j == 0) {blackB.replaceChild(L2, L1);} else if (j == 1){blackB.replaceChild(L3, L2);} else if (j == 2){blackB.replaceChild(L4, L3);} else if (j == 3){blackB.replaceChild(L1, L4);}
             
-            j++;
-            if (j == 4){j = 0;}
-            };
-            if (j == 0) {blackB.replaceChild(done, L2);} else if (j == 1){blackB.replaceChild(done, L3);} else if (j == 2){blackB.replaceChild(done, L4);} else if (j == 3){blackB.replaceChild(done, L1);}
-         });
+         };
+        });
 
          let noS = document.createElement("p");
          noS.innerText = "No songs found!";
