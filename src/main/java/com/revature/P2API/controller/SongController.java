@@ -192,7 +192,7 @@ public class SongController {
 	}
 	
 	@GetMapping("/topsongs")
-	public List<Song> getTrendingSongs() throws JsonMappingException, JsonProcessingException{
+	public List<Song> getTrendingSongs() throws IOException{
 //    Artist artist = artistService.getArtistByName(name);
 //    
 //    List<Album> albums = albumService.getAlbumsByArtistId(artist.getIdArtist());
@@ -203,6 +203,12 @@ public class SongController {
       
           
           for (Song trendingSong : trending) {
+            
+            Album album = (Album) albumController.getAlbumById(trendingSong.getIdAlbum());
+            
+  
+    
+            trendingSong.setStrAlbumThumb(album.getStrAlbumThumb());
               
               
               String responseVids = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/mvid.php?i=" + artistId,
@@ -225,9 +231,7 @@ public class SongController {
               
               
               for (Song songVid : songsWithVids) {
-                  artistId = trendingSong.getIdArtist();
-                  System.out.println("artist Id in loop " + artistId);
-                  System.out.println();
+             
                   if (songVid.getIdTrack() == trendingSong.getIdTrack()) {
                       trendingSong.setStrMusicVid(songVid.getStrMusicVid());
                       
