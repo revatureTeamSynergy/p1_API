@@ -113,6 +113,14 @@ public class MusicList {
 	@Override
 	public String toString() {
 		return "List [id=" + id + ", name=" + name + "]";
-	}	
+	}
+
+  public void updateSong(Song song) {
+      if (songs.contains(song)) {
+        songs.remove(song);
+        songs.add(song);
+      }
+    
+  }	
 	
 }
