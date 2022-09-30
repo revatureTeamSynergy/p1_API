@@ -191,6 +191,64 @@ public class SongController {
 
 	}
 	
+	@GetMapping("/topsongs")
+	public List<Song> getTrendingSongs() throws IOException{
+//    Artist artist = artistService.getArtistByName(name);
+//    
+//    List<Album> albums = albumService.getAlbumsByArtistId(artist.getIdArtist());
+      List<Song> songsWithVids = null;
+      List<Song> trending = songService.getTrendingSongs();
+      String artistId = trending.get(0).getIdArtist();
+      System.out.println("artist Id at start " + artistId);
+      
+          
+          for (Song trendingSong : trending) {
+            
+            Album album = (Album) albumController.getAlbumById(trendingSong.getIdAlbum());
+            
+  
+    
+            trendingSong.setStrAlbumThumb(album.getStrAlbumThumb());
+              
+              
+              String responseVids = restTemplate.getForObject("https://www.theaudiodb.com/api/v1/json/523532/mvid.php?i=" + artistId,
+                      String.class);
+              
+              if (responseVids.equals("{\"mvids\":null}")) {
+                 
+                  System.out.println("Null response");
+                  result = "";
+              
+                  
+              }   else {
+                  
+                  String responseFormatted = responseVids.substring(9, responseVids.length() - 1);
+                  
+                  songsWithVids = (List<Song>) mapper.readValue(responseFormatted, new TypeReference<List<Song>>() {
+                  });
+              
+              
+              
+              
+              for (Song songVid : songsWithVids) {
+             
+                  if (songVid.getIdTrack() == trendingSong.getIdTrack()) {
+                      trendingSong.setStrMusicVid(songVid.getStrMusicVid());
+                      
+                  }
+              }
+          
+      }
+      
+      
+  
+      
+      }
+      
+      
+      return trending;
+  }
+	
 	@PostMapping("/create")
 	public void createSong(@RequestBody Song song) throws JsonMappingException, JsonProcessingException {
 		System.out.println("START CREATE SONG");

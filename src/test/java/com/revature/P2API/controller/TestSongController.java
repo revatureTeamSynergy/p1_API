@@ -36,15 +36,15 @@ public class TestSongController {
 
 	}
 */
-	@Test
+//	@Test
 	public void contextLoads() {
 		RestTemplate restTemplate;
 		Object result = null;
 		ObjectMapper mapper = new ObjectMapper();
 
 	}
-
-	@Test
+//
+//	@Test
 	void getSongByIdIncorrect() throws Exception {
 
 		Object song = sCon.getSongById("1");
@@ -52,7 +52,7 @@ public class TestSongController {
 		assertEquals(song, "{\"track\":null}");
 	}
 
-	@Test
+//	@Test
 	void getSongByIdStatusOK() throws JsonMappingException, JsonProcessingException {
 
 		ResponseEntity<String> response = testRestTemplate
@@ -61,7 +61,7 @@ public class TestSongController {
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
 
-	@Test
+//	@Test
 	void getSongByIdMediaJson() throws JsonMappingException, JsonProcessingException {
 
 		ResponseEntity<String> response = testRestTemplate
@@ -70,7 +70,7 @@ public class TestSongController {
 		assertEquals(response.getHeaders().getContentType(), MediaType.APPLICATION_JSON);
 	}
 
-	@Test
+//	@Test
 	void getSongByIdJsonContent() throws JsonMappingException, JsonProcessingException {
 
 		ResponseEntity<String> response = testRestTemplate
@@ -79,7 +79,7 @@ public class TestSongController {
 		assertEquals(response.getBody(), "{\"track\":null}");
 	}
 
-	@Test
+//	@Test
 	void getSongsByAlbumIdIncorrect() throws IOException {
 
 		Object song = sCon.getSongsByAlbumId("1");
@@ -87,7 +87,7 @@ public class TestSongController {
 		assertEquals(song, "{\"track\":null}");
 	}
 
-	@Test
+//	@Test
 	void getSongsByAlbumIdStatusOK() throws JsonMappingException, JsonProcessingException {
 
 		ResponseEntity<String> response = testRestTemplate
@@ -96,7 +96,7 @@ public class TestSongController {
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
 
-	@Test
+//	@Test
 	void getSongsByAlbumIdMediaJson() throws JsonMappingException, JsonProcessingException {
 
 		ResponseEntity<String> response = testRestTemplate
@@ -105,7 +105,7 @@ public class TestSongController {
 		assertEquals(response.getHeaders().getContentType(), MediaType.APPLICATION_JSON);
 	}
 
-	@Test
+//	@Test
 	void getSongsByAlbumIdJsonContent() throws JsonMappingException, JsonProcessingException {
 
 		ResponseEntity<String> response = testRestTemplate
@@ -114,7 +114,7 @@ public class TestSongController {
 		assertEquals(response.getBody(), "{\"track\":null}");
 	}
 	
-	@Test
+//	@Test
 	void getMusicVideosByArtistIdJsonContent() throws JsonMappingException, JsonProcessingException {
 
 		ResponseEntity<String> response = testRestTemplate
